@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10182e">
+<title>مدينة الحروف — قضية التاء الغامضة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Lalezar&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#10182e;--night2:#182342;--slate:#22305a;--slate2:#2c3d6e;--fog:#9fb0d0;
+  --lamp:#ffb020;--gold:#ffd24a;--gold-l:#ffe9a8;--brass:#c98a2e;--brass-d:#8a5a14;
+  --red:#e0453a;--red-d:#a02a22;--cyan:#35d0e0;--cyan-l:#a8eef5;--violet:#7c5cff;
+  --paper:#f7ecd7;--paper-d:#e8d5ae;--manila:#e3c98f;--ink:#2b2118;--ink-soft:#6b5a44;
+  --cork:#9a6a3f;--cork-d:#6b4526;--wood:#7a4f28;
+  --green:#3fbf6f;--green-d:#1f7a44;--dim:#8b97b5;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scrollbar-color:var(--brass) var(--night);scrollbar-width:thin}
+body{
+  font-family:'Baloo Bhaijaan 2','Segoe UI',Tahoma,sans-serif;color:#fff;
+  background:linear-gradient(180deg,#0b1226 0%,#10182e 34%,#1b2a52 62%,#3a2f5e 82%,#5a3a4e 100%) fixed;
+  min-height:100dvh;overflow-x:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none;
+}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--night);border-radius:8px}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold),var(--brass-d));border-radius:8px;border:3px solid var(--night)}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(var(--gold-l),var(--brass))}
+[role=button]{cursor:pointer}
+[role=button]:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+button{font-family:inherit}
+
+/* ===== مدينة الحروف الليلية ===== */
+.bg-stack{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.moon{position:absolute;top:40px;left:60px;width:86px;height:86px;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff6d8,#ffd24a 60%,#e0a020);box-shadow:0 0 60px 16px rgba(255,210,74,.35)}
+.moon::after{content:'';position:absolute;top:14px;left:18px;width:16px;height:16px;border-radius:50%;background:rgba(200,150,40,.35);box-shadow:26px 22px 0 -4px rgba(200,150,40,.3),8px 40px 0 -6px rgba(200,150,40,.28)}
+.searchlight{position:absolute;bottom:26vh;left:14%;width:0;height:0;border-left:70px solid transparent;border-right:70px solid transparent;border-bottom:70vh solid rgba(255,210,74,.07);transform-origin:50% 100%;animation:sweep 16s ease-in-out infinite alternate;filter:blur(2px)}
+@keyframes sweep{from{transform:rotate(-24deg)}to{transform:rotate(26deg)}}
+.fog{position:absolute;border-radius:50%;filter:blur(50px);opacity:.16;background:#9fb0d0}
+.f1{width:520px;height:180px;bottom:16vh;right:-140px;animation:fogA 40s ease-in-out infinite alternate}
+.f2{width:460px;height:160px;bottom:24vh;left:-120px;animation:fogB 52s ease-in-out infinite alternate}
+@keyframes fogA{to{transform:translateX(-160px)}}
+@keyframes fogB{to{transform:translateX(180px)}}
+#skyline{position:absolute;bottom:0;left:0;right:0;height:42vh;min-height:240px}
+#skyline svg{width:100%;height:100%;display:block}
+#bgcv{position:absolute;inset:0}
+.streetglow{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(180deg,transparent,rgba(255,176,32,.14))}
+.grain{position:fixed;inset:0;z-index:35;pointer-events:none;opacity:.06;background-size:160px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E")}
+
+#app{position:relative;z-index:2;min-height:100dvh;display:flex;flex-direction:column}
+
+/* ===== الشريط العلوي ===== */
+header{position:sticky;top:0;z-index:30;background:rgba(14,20,40,.9);backdrop-filter:blur(8px);border-bottom:3px solid var(--brass-d);box-shadow:0 4px 18px rgba(0,0,0,.4)}
+.hud-in{max-width:1220px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:8px 16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:9px}
+.logo svg{width:36px;height:36px}
+.logo b{font-family:'Lalezar';font-size:21px;color:var(--gold);white-space:nowrap;text-shadow:0 0 14px rgba(255,210,74,.4)}
+.logo small{display:block;font-family:'Baloo Bhaijaan 2';font-size:11px;color:var(--cyan);font-weight:700;line-height:1;margin-top:-2px}
+.pips{display:flex;gap:8px;flex:1;justify-content:center;flex-wrap:wrap}
+.pip{display:flex;align-items:center;gap:6px;padding:4px 11px;border-radius:8px;border:2px solid var(--slate2);color:var(--dim);font-weight:700;font-size:13px;background:rgba(0,0,0,.3);transition:.3s}
+.pip .n{width:22px;height:22px;border-radius:6px;background:var(--slate2);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.pip.active{border-color:var(--lamp);color:var(--gold);box-shadow:0 0 12px rgba(255,176,32,.3)}
+.pip.active .n{background:var(--lamp);color:#3a2400}
+.pip.done{border-color:var(--green);color:var(--green)}
+.pip.done .n{background:var(--green);color:#0c2a16}
+.hud-ctrl{display:flex;align-items:center;gap:8px}
+.clues{display:flex;align-items:center;gap:6px;background:rgba(255,210,74,.12);border:2px solid var(--brass);padding:5px 12px;border-radius:8px;color:var(--gold);font-weight:800;font-size:17px}
+.clues svg{width:20px;height:20px}
+.clues.pop{animation:starPop .35s}
+@keyframes starPop{40%{transform:scale(1.2)}}
+.hbtn{display:flex;gap:6px;align-items:center;background:rgba(255,255,255,.05);border:2px solid var(--slate2);color:var(--cyan-l);border-radius:8px;padding:6px 12px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s}
+.hbtn:hover{border-color:var(--cyan);background:rgba(53,208,224,.1);transform:translateY(-1px)}
+.hbtn svg{width:18px;height:18px;flex:none}
+.hbtn.muted{color:var(--dim);border-color:var(--slate)}
+
+/* ===== منطقة اللعب ===== */
+main{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:20px 14px 26px;display:flex;flex-direction:column;align-items:center}
+#stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:16px}
+#stage.shake{animation:shakeX .45s}
+@keyframes shakeX{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.stage-head{text-align:center;animation:riseIn .5s both}
+.stage-chip{display:inline-block;background:rgba(53,208,224,.12);border:2px solid var(--cyan);color:var(--cyan-l);border-radius:6px;padding:3px 16px;font-weight:700;font-size:14px}
+.stage-title{font-family:'Lalezar';font-size:clamp(28px,5vw,42px);color:var(--gold);text-shadow:0 0 18px rgba(255,210,74,.4),0 3px 0 rgba(0,0,0,.5);margin:4px 0 2px;line-height:1.2}
+.stage-obj{color:var(--fog);font-weight:600;font-size:clamp(14px,2.6vw,17px);max-width:660px;margin:0 auto}
+.target-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,176,32,.12);border:2px dashed var(--lamp);border-radius:8px;padding:3px 14px;font-weight:700;color:var(--gold-l);margin-top:7px}
+.target-chip b{font-size:27px;color:var(--gold);line-height:1}
+
+/* ===== ملف القضية ===== */
+.case{position:relative;width:100%;max-width:980px;background:linear-gradient(160deg,#fbf3e2,var(--paper) 55%,var(--paper-d));border:4px solid var(--brass);border-radius:16px;box-shadow:0 0 0 3px var(--brass-d),0 24px 50px rgba(0,0,0,.5),inset 0 2px 0 #fff;padding:40px 22px 24px;animation:riseIn .6s .08s both;color:var(--ink)}
+.case::before{content:'';position:absolute;inset:8px;border:2px dashed rgba(138,90,20,.25);border-radius:10px;pointer-events:none}
+.case-tab{position:absolute;top:-22px;right:26px;background:linear-gradient(var(--manila),#c9a86a);color:#5a3a10;font-family:'Lalezar';font-size:17px;padding:5px 22px;border-radius:10px 10px 0 0;border:3px solid var(--brass-d);border-bottom:none;box-shadow:0 -3px 0 rgba(0,0,0,.15)}
+.case-stamp{position:absolute;top:14px;left:18px;transform:rotate(-12deg);border:3px solid var(--red);color:var(--red);font-family:'Lalezar';font-size:15px;padding:2px 12px;border-radius:6px;opacity:.75;letter-spacing:1px}
+.clip{position:absolute;top:-12px;width:26px;height:40px;border:4px solid #9aa4b8;border-radius:12px;border-bottom:none;opacity:.9}
+.clip.c1{left:60px}.clip.c2{right:120px}
+.lamp-cone{position:absolute;top:-40px;right:-30px;width:340px;height:300px;background:radial-gradient(ellipse at 80% 0%,rgba(255,210,74,.35),transparent 68%);pointer-events:none;filter:blur(4px)}
+.progress-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.progress-label{font-weight:800;color:#5a3a10;font-size:16px;background:#fff;border:2px solid var(--brass);border-radius:8px;padding:3px 14px}
+.mini-pins{display:flex;gap:6px}
+.mini-pin{width:18px;height:18px;border-radius:50%;background:#d8c8a8;border:2px solid var(--brass-d);transition:.3s}
+.mini-pin.full{background:var(--red);border-color:var(--red-d);box-shadow:0 0 8px rgba(224,69,58,.6)}
+
+/* ===== المرحلة ١: لوحة الحروف + العدسة ===== */
+.s1-wrap{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start}
+.board-side{display:flex;flex-direction:column;gap:8px}
+.board-hint{display:flex;align-items:center;gap:8px;justify-content:center;color:#5a3a10;font-weight:700;font-size:14px}
+.board-hint .mag{font-size:18px}
+.letter-board{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;background:rgba(138,90,20,.12);border:3px solid var(--brass-d);border-radius:14px;padding:12px;touch-action:none}
+.lcell{position:relative;aspect-ratio:1;display:grid;place-items:center;background:linear-gradient(#fffdf6,#f0e2c4);border:2px solid #c9b088;border-radius:10px;font-weight:800;font-size:clamp(24px,4vw,34px);color:var(--ink);box-shadow:0 3px 0 #b89a6a;transition:transform .12s,background .2s;cursor:pointer}
+.lcell:hover{transform:translateY(-2px)}
+.lcell.found{background:linear-gradient(var(--gold-l),var(--gold));border-color:var(--brass-d);color:#5a3400;box-shadow:0 0 14px rgba(255,210,74,.8),0 3px 0 var(--brass-d);cursor:default}
+.lcell.found::after{content:'✓';position:absolute;top:-7px;left:-7px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:13px;display:grid;place-items:center;border:2px solid #fff}
+.lcell.miss{animation:cellMiss .45s}
+@keyframes cellMiss{20%,60%{transform:translateX(-5px);background:#ffd9d4}40%,80%{transform:translateX(5px);background:#ffd9d4}}
+.lcell.scan{animation:cellScan .5s}
+@keyframes cellScan{40%{transform:scale(1.12)}}
+.cork{position:relative;background:radial-gradient(circle at 20% 30%,rgba(0,0,0,.12) 2px,transparent 3px) 0 0/14px 14px,radial-gradient(circle at 70% 60%,rgba(255,255,255,.1) 1.5px,transparent 2.5px) 0 0/18px 18px,linear-gradient(150deg,#a9764a,var(--cork) 60%,var(--cork-d));border:5px solid var(--wood);border-radius:14px;box-shadow:inset 0 4px 14px rgba(0,0,0,.4),0 8px 0 rgba(0,0,0,.3);aspect-ratio:1/1.06;overflow:hidden}
+.cork-title{position:absolute;top:8px;right:50%;transform:translateX(50%);background:var(--paper);color:#5a3a10;font-family:'Lalezar';font-size:14px;padding:2px 14px;border-radius:6px;border:2px solid var(--brass-d);z-index:3;white-space:nowrap}
+.cork-pin{position:absolute;top:46%;right:50%;transform:translate(50%,-50%);width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a7a,var(--red) 60%,var(--red-d));border:3px solid #fff;box-shadow:0 4px 8px rgba(0,0,0,.5);display:grid;place-items:center;font-weight:800;font-size:18px;color:#fff;z-index:3}
+.strings{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.strings path{stroke:var(--red);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-dasharray:300;stroke-dashoffset:300;transition:stroke-dashoffset .8s ease}
+.strings path.on{stroke-dashoffset:0}
+.clue-slot{position:absolute;width:88px;z-index:2;opacity:0;transform:scale(.4) rotate(-8deg);transition:.5s cubic-bezier(.34,1.56,.64,1)}
+.clue-slot.on{opacity:1;transform:scale(1) rotate(var(--rot,0deg))}
+.clue-card{background:var(--paper);border:2px solid var(--brass-d);border-radius:8px;padding:5px 4px 3px;text-align:center;box-shadow:0 5px 10px rgba(0,0,0,.4);position:relative}
+.clue-card::before{content:'';position:absolute;top:-7px;right:50%;transform:translateX(50%);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a7a,var(--red));border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.clue-card svg{width:40px;height:40px;display:block;margin:2px auto 0}
+.clue-word{font-weight:800;font-size:15px;color:var(--ink);line-height:1.2}
+.clue-num{font-size:10px;font-weight:700;color:var(--red);display:block}
+.cs1{top:14%;right:6%;--rot:-5deg}.cs2{top:12%;left:6%;--rot:4deg}.cs3{bottom:20%;right:4%;--rot:5deg}.cs4{bottom:16%;left:5%;--rot:-4deg}.cs5{bottom:2%;right:50%;transform-origin:center;--rot:2deg}
+.cs5{transform:translateX(50%) scale(.4) rotate(-8deg)}
+.cs5.on{transform:translateX(50%) scale(1) rotate(2deg)}
+
+/* العدسة المكبرة الحقيقية */
+#lens{position:fixed;z-index:45;width:168px;height:168px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .18s;
+  border:9px solid var(--brass);box-shadow:0 0 0 3px var(--brass-d),0 16px 34px rgba(0,0,0,.55),inset 0 0 26px rgba(53,208,224,.28);
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.4),rgba(53,208,224,.1) 46%,rgba(16,24,46,.14));transform:translate(-50%,-50%)}
+#lens.on{opacity:1}
+#lens::before{content:'';position:absolute;top:12%;left:16%;width:34%;height:16%;background:rgba(255,255,255,.5);border-radius:50%;transform:rotate(-28deg);filter:blur(2px);z-index:3}
+#lens::after{content:'';position:absolute;bottom:-52px;left:-30px;width:16px;height:70px;background:linear-gradient(90deg,var(--brass-d),var(--brass),var(--brass-d));border-radius:8px;transform:rotate(40deg);box-shadow:0 4px 8px rgba(0,0,0,.4)}
+.lens-clip{position:absolute;inset:0;border-radius:50%;overflow:hidden}
+.lens-world{position:absolute;top:0;left:0;transform-origin:0 0}
+.lens-world .letter-board{border-color:transparent;background:transparent}
+.lens-ring{position:absolute;inset:-9px;border-radius:50%;border:3px solid var(--cyan);opacity:0}
+#lens.pulse .lens-ring{animation:lensPulse .5s ease-out}
+@keyframes lensPulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.35)}}
+
+/* ===== المرحلة ٢: طابور المشتبه بهم ===== */
+.lineup{position:relative;background:repeating-linear-gradient(180deg,transparent 0 34px,rgba(138,90,20,.18) 34px 36px);border:3px solid var(--brass-d);border-radius:14px;padding:18px 12px 14px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.lineup::before{content:'طابور التحقيق';position:absolute;top:-14px;right:50%;transform:translateX(50%);background:var(--slate);color:var(--gold);font-family:'Lalezar';font-size:14px;padding:2px 16px;border-radius:6px;border:2px solid var(--brass-d)}
+.suspect{position:relative;width:150px;background:linear-gradient(#fffdf6,#efe0c0);border:3px solid var(--brass-d);border-radius:12px;padding:8px 8px 6px;text-align:center;box-shadow:0 5px 0 #b89a6a;transition:transform .2s,box-shadow .2s;animation:riseIn .5s both}
+.suspect:hover{transform:translateY(-4px)}
+.suspect .num{position:absolute;top:6px;right:6px;background:var(--slate);color:#fff;font-weight:800;font-size:12px;padding:1px 8px;border-radius:5px}
+.suspect .mug{width:96px;height:96px;margin:14px auto 4px;background:repeating-linear-gradient(180deg,#e8f0f8 0 16px,#d8e4f0 16px 18px);border:2px solid #b8c4d4;border-radius:8px;display:grid;place-items:center}
+.suspect .mug svg{width:82px;height:82px}
+.suspect .sname{font-weight:800;font-size:22px;color:var(--ink);line-height:1.2}
+.suspect .slabel{font-size:11px;font-weight:700;color:var(--ink-soft)}
+.suspect .check{position:absolute;top:-12px;left:-12px;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-size:22px;font-weight:800;display:none;place-items:center;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.35);z-index:2}
+.suspect.ok{border-color:var(--green-d);box-shadow:0 0 16px rgba(63,191,111,.5),0 5px 0 var(--green-d);transform:translateY(-3px)}
+.suspect.ok .check{display:grid;animation:popIn .4s}
+.suspect.ok .stamp-ok{display:block}
+.stamp-ok{display:none;position:absolute;bottom:34px;left:50%;transform:translateX(-50%) rotate(-10deg);border:2.5px solid var(--green-d);color:var(--green-d);font-family:'Lalezar';font-size:13px;padding:0 8px;border-radius:5px;background:rgba(255,255,255,.85)}
+.suspect.no{animation:shakeX .45s}
+.suspect.no .stamp-no{display:block}
+.stamp-no{display:none;position:absolute;bottom:34px;left:50%;transform:translateX(-50%) rotate(-8deg);border:2.5px solid var(--dim);color:var(--ink-soft);font-family:'Lalezar';font-size:12px;padding:0 8px;border-radius:5px;background:rgba(255,255,255,.85)}
+.suspect.cool{pointer-events:none}
+
+/* ===== المرحلة ٣: ملفات الكلمات ===== */
+.wordfiles{display:flex;flex-direction:column;gap:14px}
+.wordfile{display:flex;align-items:center;gap:16px;background:linear-gradient(#fffdf6,#f0e2c4);border:3px solid var(--brass-d);border-radius:14px;padding:12px 14px;box-shadow:0 5px 0 #b89a6a;flex-wrap:wrap;justify-content:center;animation:riseIn .5s both;position:relative}
+.wordfile .wpic{width:84px;height:84px;flex:none;background:#fff;border:2px solid var(--brass);border-radius:10px;display:grid;place-items:center}
+.wordfile .wpic svg{width:72px;height:72px}
+.wordfile .wtiles{display:flex;gap:8px}
+.ltile{position:relative;width:64px;height:74px;display:grid;place-items:center;background:linear-gradient(#fffdf6,#ecdcbc);border:3px solid var(--brass);border-radius:12px;font-weight:800;font-size:38px;color:var(--ink);box-shadow:0 4px 0 var(--brass-d);cursor:pointer;transition:transform .15s}
+.ltile:hover{transform:translateY(-3px)}
+.ltile.hit{background:linear-gradient(var(--gold-l),var(--gold));border-color:var(--brass-d);color:#5a3400;box-shadow:0 0 16px rgba(255,210,74,.9),0 4px 0 var(--brass-d);cursor:default;animation:popIn .4s}
+.ltile.hit::after{content:'✓';position:absolute;top:-9px;left:-9px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:14px;display:grid;place-items:center;border:2px solid #fff}
+.ltile.miss{animation:cellMiss .45s}
+.pos-badge{margin-inline-start:auto;background:var(--slate);color:var(--gold);border:2px solid var(--brass-d);border-radius:10px;padding:6px 14px;text-align:center;opacity:0;transform:translateX(14px);transition:.45s;min-width:120px}
+.pos-badge.on{opacity:1;transform:translateX(0)}
+.pos-badge b{display:block;font-family:'Lalezar';font-size:16px;line-height:1.2}
+.pos-badge span{display:block;font-size:24px;font-weight:800;color:var(--cyan);line-height:1.1}
+.wordfile.solved{border-color:var(--green-d);box-shadow:0 0 14px rgba(63,191,111,.4),0 5px 0 var(--green-d)}
+
+/* ===== المرحلة ٤: صناديق الأدلة ===== */
+.boxes{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.ebox{position:relative;width:170px;height:150px;cursor:pointer;transition:transform .2s;animation:riseIn .5s both}
+.ebox:hover{transform:translateY(-4px)}
+.ebox svg{width:100%;height:100%;display:block;overflow:visible}
+.ebox .lid{transform-box:view-box;transform-origin:20px 62px;transition:transform .7s cubic-bezier(.34,1.4,.64,1)}
+.ebox.open .lid{transform:rotate(-58deg) translateY(-6px)}
+.ebox .lock{transition:transform .5s,opacity .5s}
+.ebox.open .lock{transform:translateY(46px) rotate(28deg);opacity:0}
+.ebox .inner-glow{opacity:0;transition:opacity .6s .3s}
+.ebox.open .inner-glow{opacity:1}
+.ebox .treasure{opacity:0;transform:scale(.3);transform-box:fill-box;transform-origin:center;transition:.5s .45s cubic-bezier(.34,1.56,.64,1)}
+.ebox.open .treasure{opacity:1;transform:scale(1)}
+.ebox .box-num{position:absolute;top:8px;right:50%;transform:translateX(50%);background:var(--slate);color:var(--gold);font-family:'Lalezar';font-size:14px;padding:1px 14px;border-radius:6px;border:2px solid var(--brass-d);z-index:2}
+.ebox .box-check{position:absolute;top:-10px;left:-6px;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font-size:19px;font-weight:800;display:none;place-items:center;border:3px solid #fff;z-index:3}
+.ebox.open .box-check{display:grid;animation:popIn .4s}
+.ebox.active{filter:drop-shadow(0 0 14px rgba(255,210,74,.7))}
+.ebox.open{cursor:default}
+.puzzle{background:linear-gradient(#fffdf6,#f0e2c4);border:3px solid var(--brass-d);border-radius:14px;padding:16px;box-shadow:0 5px 0 #b89a6a;animation:riseIn .4s both}
+.puzzle-q{font-family:'Lalezar';font-size:clamp(19px,3.4vw,25px);color:#5a3a10;text-align:center;margin-bottom:12px}
+.puzzle-q b{color:var(--red)}
+.opts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.opt{position:relative;width:140px;background:#fff;border:3px solid var(--brass);border-radius:12px;padding:8px;text-align:center;box-shadow:0 4px 0 var(--brass-d);cursor:pointer;transition:transform .18s}
+.opt:hover{transform:translateY(-4px)}
+.opt svg{width:70px;height:70px;display:block;margin:0 auto}
+.opt .ow{font-weight:800;font-size:22px;color:var(--ink)}
+.opt.right{border-color:var(--green-d);background:#eafff0;box-shadow:0 0 16px rgba(63,191,111,.6),0 4px 0 var(--green-d)}
+.opt.right::after{content:'✓';position:absolute;top:-10px;left:-10px;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-size:18px;display:grid;place-items:center;border:2px solid #fff}
+.opt.wrong{animation:shakeX .45s;border-color:var(--red)}
+.opt.cool{pointer-events:none}
+
+/* ===== إتمام وأزرار ===== */
+.done-card{width:100%;max-width:640px;background:var(--paper);color:var(--ink);border:3px solid var(--brass);border-radius:14px;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:0 6px 0 var(--brass-d);animation:riseIn .5s both;scroll-margin:90px 0 150px}
+.done-card p{font-weight:800;font-size:19px}
+.btn-primary{position:relative;overflow:hidden;font-family:'Lalezar';font-size:20px;background:linear-gradient(var(--gold),var(--lamp));color:#4a2e00;border:3px solid var(--brass-d);border-radius:10px;padding:10px 28px;box-shadow:0 6px 0 var(--brass-d),0 10px 22px rgba(255,176,32,.3);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary:active{transform:translateY(2px);box-shadow:0 3px 0 var(--brass-d)}
+.btn-primary::after{content:'';position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.6),transparent);left:-60%;animation:shineSweep 3.2s infinite}
+@keyframes shineSweep{0%,55%{left:-60%}100%{left:130%}}
+.btn-primary.big{font-size:25px;padding:14px 42px}
+.btn-plain{font-weight:800;font-size:17px;background:var(--paper-d);color:var(--ink);border:3px solid var(--brass);border-radius:10px;padding:9px 26px;cursor:pointer;box-shadow:0 4px 0 var(--brass-d)}
+.btn-hint{flex:none;background:rgba(53,208,224,.12);border:2px solid var(--cyan);color:var(--cyan-l);border-radius:10px;padding:8px 18px;font-weight:800;font-size:15px;cursor:pointer;transition:.2s;margin-bottom:18px}
+.btn-hint:hover{background:rgba(53,208,224,.24);transform:translateY(-2px)}
+
+/* ===== المحقق الصغير ===== */
+footer{position:sticky;bottom:0;z-index:25;background:linear-gradient(180deg,rgba(14,20,40,.6),rgba(10,15,32,.97));backdrop-filter:blur(6px);border-top:3px solid var(--brass-d)}
+.guide-in{max-width:1120px;margin:0 auto;display:flex;align-items:flex-end;gap:14px;padding:6px 16px 10px}
+.detective{width:108px;flex:none}
+.dsvg{width:100%;display:block;overflow:visible}
+.detective .d-all{animation:bob 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.detective .mag-g{transform-box:view-box;transform-origin:112px 96px;animation:magIdle 3.6s ease-in-out infinite}
+@keyframes magIdle{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
+.detective .glint{animation:glint 2.6s ease-in-out infinite}
+@keyframes glint{0%,100%{opacity:.25}50%{opacity:.85}}
+.d-eyes-happy,.d-mouth-sad{display:none}
+.detective[data-mood=happy] .d-eyes-idle,.detective[data-mood=cheer] .d-eyes-idle{display:none}
+.detective[data-mood=happy] .d-eyes-happy,.detective[data-mood=cheer] .d-eyes-happy{display:block}
+.detective[data-mood=happy] .d-mouth-idle,.detective[data-mood=cheer] .d-mouth-idle,.detective[data-mood=sad] .d-mouth-idle{display:none}
+.detective[data-mood=sad] .d-mouth-sad{display:block}
+.detective[data-mood=sad] .d-head{transform:rotate(-6deg) translateY(2px)}
+.detective .d-head{transform-box:fill-box;transform-origin:center;transition:transform .3s}
+.detective[data-mood=cheer] .d-all{animation:cheerJump 1s ease-in-out infinite}
+.detective[data-mood=cheer] .mag-g{animation:magCheer .8s ease-in-out infinite}
+@keyframes magCheer{50%{transform:rotate(-30deg) translateY(-8px)}}
+@keyframes cheerJump{0%,100%{transform:translateY(0)}30%{transform:translateY(-14px) rotate(-4deg)}60%{transform:translateY(-3px)}80%{transform:translateY(-8px) rotate(4deg)}}
+.detective.talk .d-mouth-idle{animation:talk .14s 8 alternate;transform-box:fill-box;transform-origin:center}
+@keyframes talk{to{transform:scaleY(.35)}}
+.bubble{flex:1;min-width:0;background:var(--paper);color:var(--ink);border:3px solid var(--brass);border-radius:12px;padding:11px 16px;font-weight:600;font-size:17px;line-height:1.55;position:relative;box-shadow:0 5px 0 var(--brass-d);margin-bottom:14px}
+.bubble::after{content:'';position:absolute;right:-19px;bottom:20px;border:10px solid transparent;border-left-color:var(--brass)}
+.bubble.pop{animation:popIn .35s}
+.bubble .taa-hl{color:var(--red);font-weight:800;font-size:1.15em}
+
+/* ===== الطبقات ===== */
+#fxcv{position:fixed;inset:0;z-index:60;pointer-events:none}
+.overlay{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;padding:22px 16px;background:rgba(8,12,26,.88);backdrop-filter:blur(7px);opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;overscroll-behavior:contain}
+.overlay>*{margin:auto 0;flex:none}
+.overlay.show{opacity:1;pointer-events:auto}
+.overlay.trans{background:radial-gradient(circle at 50% 38%,#22305a,#0b1226 72%)}
+.intro-card{max-width:700px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:15px;animation:riseIn .55s both;padding:10px 0 20px}
+.intro-hero{position:relative;width:170px}
+.intro-hero .detective{width:170px;margin:0 auto}
+.intro-title{font-family:'Lalezar';font-size:clamp(36px,7.5vw,58px);background:linear-gradient(90deg,var(--gold),var(--lamp),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(0,0,0,.5));line-height:1.15}
+.intro-sub{font-family:'Lalezar';color:var(--red);font-size:clamp(18px,3.6vw,24px);border:3px solid var(--red);padding:2px 18px;border-radius:8px;transform:rotate(-3deg);background:rgba(224,69,58,.08)}
+.story{display:flex;align-items:center;gap:14px;background:var(--paper);color:var(--ink);border:3px solid var(--brass);border-radius:14px;padding:14px 18px;box-shadow:0 6px 0 var(--brass-d);text-align:right}
+.story p{font-weight:600;font-size:16.5px;line-height:1.75}
+.story b{color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{background:rgba(53,208,224,.1);border:2px solid var(--cyan);color:var(--cyan-l);border-radius:8px;padding:5px 14px;font-weight:700;font-size:14px}
+.chip b{color:var(--gold)}
+.skill-chip{background:rgba(255,176,32,.12);border-color:var(--lamp);color:var(--gold-l)}
+.tiny-note{color:var(--dim);font-size:13px;font-weight:600}
+.trans-card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;animation:popIn .5s both}
+.trans-card .trans-mag{width:120px;animation:magIdle 2s ease-in-out infinite}
+.trans-num{font-family:'Lalezar';font-size:24px;color:var(--cyan)}
+.trans-title{font-family:'Lalezar';font-size:clamp(36px,7vw,52px);color:var(--gold);text-shadow:0 0 20px rgba(255,210,74,.5),0 4px 0 rgba(0,0,0,.5)}
+.trans-sub{color:var(--fog);font-weight:600;font-size:17px;max-width:440px}
+.finale-card{max-width:580px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0 24px;animation:riseIn .5s both}
+.finale-card .detective{width:96px}
+.medal-svg{width:min(260px,62vw);display:block;animation:medalDrop .9s cubic-bezier(.34,1.56,.64,1) both;filter:drop-shadow(0 0 28px rgba(255,210,74,.6))}
+@keyframes medalDrop{0%{transform:translateY(-80px) scale(.5);opacity:0}60%{transform:translateY(8px) scale(1.06)}100%{transform:translateY(0) scale(1);opacity:1}}
+.medal-shine{transform-origin:120px 110px;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.name-banner{background:linear-gradient(var(--red),var(--red-d));color:#fff;font-family:'Lalezar';font-size:22px;padding:6px 28px;border-radius:8px;border:3px solid #6a1a14;box-shadow:0 4px 0 #4a100c;margin-top:-14px;position:relative;z-index:1;min-width:210px}
+.finale-title{font-family:'Lalezar';font-size:clamp(28px,6vw,40px);color:var(--gold);text-shadow:0 0 18px rgba(255,210,74,.5)}
+.finale-rank{color:var(--cyan);font-weight:700;font-size:18px}
+.finale-clues{color:var(--gold);font-weight:800;font-size:22px}
+.closed-stamp{font-family:'Lalezar';color:var(--green);border:4px solid var(--green);padding:2px 20px;border-radius:8px;transform:rotate(-6deg);font-size:20px;background:rgba(63,191,111,.08)}
+.name-input{background:rgba(255,255,255,.07);border:2px dashed var(--brass);color:var(--gold-l);border-radius:10px;padding:9px 14px;font-family:inherit;font-weight:700;font-size:18px;text-align:center;width:min(290px,86%)}
+.name-input::placeholder{color:var(--dim)}
+.confirm-card{max-width:400px;width:100%;background:var(--paper);color:var(--ink);border:3px solid var(--brass);border-radius:14px;padding:26px;text-align:center;box-shadow:0 8px 0 var(--brass-d);animation:popIn .35s both}
+.confirm-card h3{font-family:'Lalezar';font-size:25px;margin-bottom:6px}
+.confirm-card p{font-weight:600;color:var(--ink-soft);margin-bottom:18px}
+.confirm-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .s1-wrap{grid-template-columns:1fr}
+  .cork{aspect-ratio:auto;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:34px 10px 12px}
+  .cork-pin,.strings{display:none}
+  .clue-slot{position:static;width:86px;transform:scale(.4) rotate(-8deg)}
+  .clue-slot.on{transform:scale(1) rotate(0)}
+  .cs5{transform:scale(.4) rotate(-8deg)}
+  .cs5.on{transform:scale(1) rotate(0)}
+}
+@media (max-width:760px){
+  .letter-board{grid-template-columns:repeat(5,1fr);gap:6px;padding:9px}
+  .lcell{font-size:26px}
+  #lens{width:132px;height:132px;border-width:7px}
+  .suspect{width:132px}
+  .suspect .mug{width:84px;height:84px}
+  .suspect .mug svg{width:72px;height:72px}
+  .suspect .sname{font-size:19px}
+  .ltile{width:52px;height:62px;font-size:31px}
+  .wordfile .wpic{width:66px;height:66px}
+  .wordfile .wpic svg{width:56px;height:56px}
+  .pos-badge{min-width:100px;margin-inline-start:0}
+  .ebox{width:140px;height:124px}
+  .opt{width:118px}
+  .opt svg{width:58px;height:58px}
+  .opt .ow{font-size:19px}
+  .case{padding:36px 12px 20px}
+  .case-tab{font-size:14px;right:14px}
+  .case-stamp{font-size:12px;top:10px;left:10px}
+  .clip{display:none}
+  .detective{width:82px}
+  .bubble{font-size:14.5px;padding:9px 12px}
+  .btn-hint{padding:7px 13px;font-size:13.5px;margin-bottom:14px}
+  .logo b{font-size:17px}
+  .logo small{display:none}
+  .pip .lbl{display:none}
+  .pip{padding:4px 7px}
+  .hbtn .lbl{display:none}
+  .hbtn{padding:6px 9px}
+  .story{flex-direction:column;text-align:center}
+  .moon{width:64px;height:64px;top:22px;left:20px}
+}
+@media (max-width:560px){
+  .pips{order:3;flex-basis:100%;padding-bottom:2px}
+  .hud-in{gap:8px;padding:8px 12px}
+  .letter-board{grid-template-columns:repeat(5,1fr)}
+  .lineup{gap:8px}
+  .suspect{width:calc(50% - 8px);max-width:150px}
+}
+@media (max-height:640px){
+  .detective{width:70px}
+  #lens{width:120px;height:120px}
+  .ebox{width:128px;height:112px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<noscript><p style="padding:30px;text-align:center;font-size:20px">هذه اللعبة تحتاج إلى تفعيل جافاسكربت لتعمل 🔍</p></noscript>
+
+<div class="bg-stack" aria-hidden="true">
+  <div class="moon"></div>
+  <div class="searchlight"></div>
+  <div class="fog f1"></div><div class="fog f2"></div>
+  <div id="skyline"></div>
+  <canvas id="bgcv"></canvas>
+  <div class="streetglow"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="app">
+  <header>
+    <div class="hud-in">
+      <div class="logo"><span id="logoMag"></span><span><b>مدينة الحروف</b><small>قسم القضايا الغامضة</small></span></div>
+      <div class="pips" id="pips" aria-label="مراحل القضية"></div>
+      <div class="hud-ctrl">
+        <div class="clues" id="cluesBox" aria-label="الأدلة المجموعة"><span id="clueIco"></span><span id="clueCount">٠</span></div>
+        <button class="hbtn" id="soundBtn" aria-pressed="true" aria-label="كتم الصوت"></button>
+        <button class="hbtn" id="restartBtn" aria-label="قضية جديدة"></button>
+      </div>
+    </div>
+  </header>
+
+  <main><div id="stage"></div></main>
+
+  <footer>
+    <div class="guide-in">
+      <div class="detective" id="detective" data-mood="idle" aria-hidden="true"></div>
+      <div class="bubble" id="bubble" aria-live="polite">أهلاً أيها المحقق! 🔍</div>
+      <button class="btn-hint" id="hintBtn">💡 تلميح</button>
+    </div>
+  </footer>
+</div>
+
+<div id="lens" aria-hidden="true"><div class="lens-clip"><div class="lens-world" id="lensWorld"></div></div><div class="lens-ring"></div></div>
+<canvas id="fxcv" aria-hidden="true"></canvas>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true"></div>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const shuffle=a=>{const c=a.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;};
+const AR='٠١٢٣٤٥٦٧٨٩';
+const arNum=n=>String(n).split('').map(d=>AR[+d]!==undefined?AR[+d]:d).join('');
+const center=el=>{const r=el.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};};
+const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+let TOKEN=0;
+const later=(ms,fn)=>{const t=TOKEN;return setTimeout(()=>{if(t===TOKEN)fn();},ms);};
+const PAL=['#ffd24a','#ffb020','#35d0e0','#7c5cff','#e0453a','#3fbf6f','#ffe9a8','#a8eef5'];
+const PRAISE=['أحسنت أيها المحقق! 🌟','دليل ممتاز! 🔍','عمل رائع! ✨','يا لك من محقق ذكي!','مذهل! القضية تتقدم! 🕵️'];
+const hasTaa=w=>w.includes('ت');
+const POS_NAME=['أول الكلمة','وسط الكلمة','آخر الكلمة'];
+const POS_FORM=['تـ','ـتـ','ـت'];
+
+const S={screen:'intro',stage:0,clues:0,mistakes:0,sound:true,busy:false,done:[false,false,false,false],hintHandler:null};
+try{const p=localStorage.getItem('city-taa-sound');if(p!==null)S.sound=p==='1';}catch(e){}
+
+/* ================= رسوم ================= */
+function starPath(cx,cy,ro,ri,pts){let d='';for(let i=0;i<pts*2;i++){const a=-Math.PI/2+i*Math.PI/pts,r=i%2?ri:ro;d+=(i?'L':'M')+(cx+Math.cos(a)*r).toFixed(1)+' '+(cy+Math.sin(a)*r).toFixed(1)+' ';}return d+'Z';}
+const magSVG=(size)=>`<svg viewBox="0 0 100 100" width="${size||36}" height="${size||36}" aria-hidden="true"><circle cx="42" cy="42" r="26" fill="rgba(53,208,224,.25)" stroke="#c98a2e" stroke-width="7"/><circle cx="42" cy="42" r="26" fill="none" stroke="#8a5a14" stroke-width="2"/><path d="M33 32 Q40 26 48 30" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/><line x1="61" y1="61" x2="86" y2="86" stroke="#8a5a14" stroke-width="11" stroke-linecap="round"/><line x1="61" y1="61" x2="86" y2="86" stroke="#c98a2e" stroke-width="7" stroke-linecap="round"/></svg>`;
+const pinSVG=()=>`<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="24" fill="#e0453a" stroke="#a02a22" stroke-width="4"/><circle cx="42" cy="30" r="7" fill="#ff9a8a" opacity=".8"/><path d="M50 62 L50 92" stroke="#9aa4b8" stroke-width="6" stroke-linecap="round"/></svg>`;
+const sndOnSVG=()=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9 H8 L13 4 V20 L8 15 H4 Z" fill="currentColor"/><path d="M16 8 Q19 12 16 16 M18.5 5.5 Q23 12 18.5 18.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`;
+const sndOffSVG=()=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9 H8 L13 4 V20 L8 15 H4 Z" fill="currentColor"/><path d="M16 9 L22 15 M22 9 L16 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+const restartSVG=()=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5 A7 7 0 1 1 5.4 9.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13 1.5 L13 8.5 L7 5 Z" fill="currentColor"/></svg>`;
+function detectiveSVG(){return `<svg viewBox="0 0 150 180" class="dsvg" aria-hidden="true">
+<ellipse cx="72" cy="172" rx="34" ry="6" fill="#000" opacity=".35"/>
+<g class="d-all">
+ <rect x="52" y="146" width="14" height="20" rx="6" fill="#3a2a1a"/><rect x="80" y="146" width="14" height="20" rx="6" fill="#3a2a1a"/>
+ <path d="M44 96 Q72 86 100 96 L106 150 Q72 160 38 150 Z" fill="#d9a05b" stroke="#8a5a14" stroke-width="3"/>
+ <path d="M60 96 L72 112 L84 96" fill="#c98a2e" stroke="#8a5a14" stroke-width="2.5"/>
+ <circle cx="72" cy="122" r="3.4" fill="#8a5a14"/><circle cx="72" cy="136" r="3.4" fill="#8a5a14"/>
+ <path d="M44 100 Q28 108 26 126" fill="none" stroke="#d9a05b" stroke-width="11" stroke-linecap="round"/>
+ <rect x="16" y="120" width="20" height="15" rx="3" fill="#f7ecd7" stroke="#8a5a14" stroke-width="2.5" transform="rotate(-12 26 127)"/>
+ <path d="M100 100 Q114 96 116 90" fill="none" stroke="#d9a05b" stroke-width="11" stroke-linecap="round"/>
+ <g class="d-head">
+  <circle cx="72" cy="66" r="27" fill="#f2c9a0" stroke="#c98a5a" stroke-width="2.5"/>
+  <circle cx="47" cy="68" r="5" fill="#f2c9a0" stroke="#c98a5a" stroke-width="2"/><circle cx="97" cy="68" r="5" fill="#f2c9a0" stroke="#c98a5a" stroke-width="2"/>
+  <g class="d-eyes-idle"><circle cx="62" cy="64" r="5" fill="#2b2118"/><circle cx="82" cy="64" r="5" fill="#2b2118"/><circle cx="63.5" cy="62.5" r="1.7" fill="#fff"/><circle cx="83.5" cy="62.5" r="1.7" fill="#fff"/></g>
+  <g class="d-eyes-happy"><path d="M57 65 Q62 59 67 65" fill="none" stroke="#2b2118" stroke-width="3" stroke-linecap="round"/><path d="M77 65 Q82 59 87 65" fill="none" stroke="#2b2118" stroke-width="3" stroke-linecap="round"/></g>
+  <path class="d-mouth-idle" d="M64 76 Q72 82 80 76" fill="none" stroke="#a05a3a" stroke-width="2.6" stroke-linecap="round"/>
+  <circle class="d-mouth-sad" cx="72" cy="78" r="3.4" fill="none" stroke="#a05a3a" stroke-width="2.4"/>
+  <circle cx="55" cy="73" r="3.4" fill="#ff9a8a" opacity=".5"/><circle cx="89" cy="73" r="3.4" fill="#ff9a8a" opacity=".5"/>
+  <path d="M42 50 Q72 26 102 50 Z" fill="#c98a2e" stroke="#8a5a14" stroke-width="3"/>
+  <path d="M40 50 Q72 42 104 50 Q104 58 72 56 Q40 58 40 50 Z" fill="#a9762e" stroke="#8a5a14" stroke-width="2.5"/>
+  <path d="M52 40 L60 48 M66 34 L72 44 M80 34 L84 44 M92 40 L96 48" stroke="#8a5a14" stroke-width="2" opacity=".6"/>
+  <path d="M100 50 Q112 48 114 54 Q106 58 100 55 Z" fill="#a9762e" stroke="#8a5a14" stroke-width="2"/>
+ </g>
+ <g class="mag-g">
+  <line x1="116" y1="90" x2="128" y2="104" stroke="#8a5a14" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="112" cy="84" r="17" fill="rgba(53,208,224,.3)" stroke="#c98a2e" stroke-width="5"/>
+  <circle cx="112" cy="84" r="17" fill="none" stroke="#8a5a14" stroke-width="1.6"/>
+  <path class="glint" d="M104 76 Q110 71 117 74" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+ </g>
+</g></svg>`;}
+function boxSVG(){return `<svg viewBox="0 0 170 150" aria-hidden="true">
+<ellipse cx="85" cy="140" rx="62" ry="8" fill="#000" opacity=".3"/>
+<g class="inner-glow"><ellipse cx="85" cy="72" rx="52" ry="16" fill="#ffd24a" opacity=".55"/><path d="M50 72 L30 20 L60 60 L85 8 L110 60 L140 20 L120 72 Z" fill="#ffd24a" opacity=".35"/></g>
+<rect x="24" y="66" width="122" height="66" rx="8" fill="#a9762e" stroke="#6b4526" stroke-width="3.5"/>
+<rect x="30" y="72" width="110" height="54" rx="5" fill="#c98a2e" opacity=".5"/>
+<path d="M24 88 H146 M24 110 H146" stroke="#6b4526" stroke-width="2.5" opacity=".6"/>
+<rect x="20" y="96" width="130" height="12" rx="4" fill="#8a5a14" stroke="#6b4526" stroke-width="2"/>
+<g class="treasure"><circle cx="85" cy="76" r="17" fill="#ffd24a" stroke="#c98a2e" stroke-width="3"/><text x="85" y="84" text-anchor="middle" font-size="22" font-weight="800" fill="#5a3400" style="font-family:'Baloo Bhaijaan 2',sans-serif">ت</text></g>
+<g class="lid"><rect x="16" y="52" width="138" height="20" rx="6" fill="#c98a2e" stroke="#6b4526" stroke-width="3.5"/><rect x="22" y="56" width="126" height="6" rx="3" fill="#e0a850" opacity=".7"/></g>
+<g class="lock"><rect x="72" y="88" width="26" height="22" rx="5" fill="#ffd24a" stroke="#8a5a14" stroke-width="2.5"/><path d="M78 88 V82 Q85 72 92 82 V88" fill="none" stroke="#9aa4b8" stroke-width="4"/><circle cx="85" cy="98" r="3" fill="#8a5a14"/></g>
+</svg>`;}
+function medalSVG(){return `<svg viewBox="0 0 240 270" class="medal-svg" aria-hidden="true">
+<path d="M84 160 L64 250 L100 226 L118 258 L130 166 Z" fill="#e0453a" stroke="#a02a22" stroke-width="3" stroke-linejoin="round"/>
+<path d="M156 160 L176 250 L140 226 L122 258 L110 166 Z" fill="#22305a" stroke="#10182e" stroke-width="3" stroke-linejoin="round"/>
+<path d="${starPath(120,110,100,74,7)}" fill="#ffb020" stroke="#8a5a14" stroke-width="3"/>
+<circle cx="120" cy="110" r="72" fill="#ffd24a" stroke="#c98a2e" stroke-width="3"/>
+<circle cx="120" cy="110" r="60" fill="#f7ecd7" stroke="#e0890c" stroke-width="3"/>
+<g transform="translate(78,44) scale(.85)"><circle cx="42" cy="42" r="24" fill="rgba(53,208,224,.3)" stroke="#c98a2e" stroke-width="6"/><path d="M33 33 Q40 27 48 31" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".8"/><line x1="60" y1="60" x2="82" y2="82" stroke="#8a5a14" stroke-width="9" stroke-linecap="round"/></g>
+<text x="120" y="128" text-anchor="middle" font-size="46" font-weight="800" fill="#2b2118" style="font-family:'Baloo Bhaijaan 2',sans-serif">ت</text>
+<text x="120" y="156" text-anchor="middle" font-size="15" fill="#a02a22" style="font-family:'Lalezar',sans-serif">المحقق المتميز</text>
+<g class="medal-shine"><path d="M120 38 A72 72 0 0 1 182 74" stroke="#fff" stroke-width="9" fill="none" opacity=".4" stroke-linecap="round"/></g>
+</svg>`;}
+const face=(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s||1})"><circle cx="-7" cy="0" r="2.6" fill="${c||'#3a2a14'}"/><circle cx="7" cy="0" r="2.6" fill="${c||'#3a2a14'}"/><path d="M-4 5 Q0 9 4 5" stroke="${c||'#3a2a14'}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="-12" cy="4" r="2.8" fill="#ff8fb0" opacity=".55"/><circle cx="12" cy="4" r="2.8" fill="#ff8fb0" opacity=".55"/></g>`;
+const PW=i=>`<svg viewBox="0 0 100 100" aria-hidden="true">${i}</svg>`;
+const PICS={
+apple:()=>PW(`<path d="M50 26 C36 14 16 22 16 44 C16 66 32 84 50 84 C68 84 84 66 84 44 C84 22 64 14 50 26 Z" fill="#ff5c5c" stroke="#a02020" stroke-width="2.5"/><path d="M50 26 Q49 14 56 10" stroke="#7a4a08" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M56 16 Q72 6 78 18 Q66 26 56 16 Z" fill="#3fbf6f" stroke="#1f7a44" stroke-width="2"/><ellipse cx="31" cy="38" rx="6" ry="10" fill="#fff" opacity=".35" transform="rotate(-20 31 38)"/>${face(50,52,1.1,'#5a1010')}`),
+cat:()=>PW(`<path d="M72 66 Q90 60 84 42" fill="none" stroke="#c98a2e" stroke-width="7" stroke-linecap="round"/><ellipse cx="50" cy="66" rx="24" ry="20" fill="#f5a623" stroke="#c97b12" stroke-width="2.5"/><path d="M34 28 L30 10 L46 22 Z" fill="#f5a623" stroke="#c97b12" stroke-width="2.5" stroke-linejoin="round"/><path d="M66 28 L70 10 L54 22 Z" fill="#f5a623" stroke="#c97b12" stroke-width="2.5" stroke-linejoin="round"/><circle cx="50" cy="40" r="20" fill="#f5a623" stroke="#c97b12" stroke-width="2.5"/><circle cx="43" cy="38" r="3" fill="#3a2a14"/><circle cx="57" cy="38" r="3" fill="#3a2a14"/><path d="M47 44 L53 44 L50 47 Z" fill="#ff8fb0"/><path d="M50 47 Q46 51 42 49 M50 47 Q54 51 58 49" fill="none" stroke="#3a2a14" stroke-width="1.8" stroke-linecap="round"/><path d="M30 42 L18 40 M30 46 L18 48 M70 42 L82 40 M70 46 L82 48" stroke="#c97b12" stroke-width="1.6" stroke-linecap="round"/><circle cx="38" cy="45" r="2.6" fill="#ff8fb0" opacity=".6"/><circle cx="62" cy="45" r="2.6" fill="#ff8fb0" opacity=".6"/>`),
+lion:()=>PW(`<path d="${starPath(50,50,38,26,12)}" fill="#c98a2e" stroke="#8a5a14" stroke-width="2.5"/><circle cx="50" cy="50" r="24" fill="#f5a623" stroke="#c97b12" stroke-width="2.5"/><circle cx="34" cy="34" r="7" fill="#f5a623" stroke="#c97b12" stroke-width="2"/><circle cx="66" cy="34" r="7" fill="#f5a623" stroke="#c97b12" stroke-width="2"/><circle cx="42" cy="46" r="3.4" fill="#3a2a14"/><circle cx="58" cy="46" r="3.4" fill="#3a2a14"/><path d="M46 54 L54 54 L50 58 Z" fill="#a05a3a"/><path d="M50 58 Q45 63 40 60 M50 58 Q55 63 60 60" fill="none" stroke="#3a2a14" stroke-width="2" stroke-linecap="round"/><path d="M28 52 L16 50 M28 56 L16 58 M72 52 L84 50 M72 56 L84 58" stroke="#c97b12" stroke-width="1.8" stroke-linecap="round"/><circle cx="36" cy="54" r="3" fill="#ff8fb0" opacity=".5"/><circle cx="64" cy="54" r="3" fill="#ff8fb0" opacity=".5"/>`),
+book:()=>PW(`<rect x="22" y="18" width="56" height="66" rx="8" fill="#35d0e0" stroke="#1a8a9a" stroke-width="3"/><rect x="66" y="18" width="12" height="66" rx="6" fill="#2ab0c0" stroke="#1a8a9a" stroke-width="2.5"/><path d="M38 18 V38 L44 33 L50 38 V18 Z" fill="#e0453a" stroke="#a02a22" stroke-width="2"/><rect x="30" y="46" width="30" height="4" rx="2" fill="#fff" opacity=".7"/>${face(45,62,1,'#0c4a5a')}`),
+pencil:()=>PW(`<g transform="rotate(18 50 50)"><rect x="40" y="18" width="20" height="52" rx="4" fill="#ffd24a" stroke="#c97b12" stroke-width="3"/><rect x="40" y="11" width="20" height="11" rx="4" fill="#ff4fa0" stroke="#a02060" stroke-width="2.5"/><path d="M40 70 L50 88 L60 70 Z" fill="#ffe9a8" stroke="#c97b12" stroke-width="2.5" stroke-linejoin="round"/><path d="M46 80 L50 88 L54 80 Z" fill="#3a2a14"/><line x1="46" y1="24" x2="46" y2="66" stroke="#f5a623" stroke-width="2"/>${face(52,44,.7,'#5a3400')}</g>`),
+house:()=>PW(`<rect x="62" y="28" width="9" height="14" fill="#c97b12" stroke="#7a4a08" stroke-width="2"/><rect x="24" y="46" width="52" height="38" rx="6" fill="#f7ecd7" stroke="#c97b12" stroke-width="3"/><path d="M18 50 L50 22 L82 50 Z" fill="#e0453a" stroke="#a02a22" stroke-width="3" stroke-linejoin="round"/><rect x="42" y="60" width="16" height="24" rx="7" fill="#35d0e0" stroke="#1a8a9a" stroke-width="2.5"/><circle cx="66" cy="60" r="6" fill="#ffd24a" stroke="#c97b12" stroke-width="2.5"/>${face(50,70,.55,'#0c4a5a')}`),
+dates:()=>PW(`<path d="M20 78 Q50 66 80 78 Q50 90 20 78 Z" fill="#3fbf6f" stroke="#1f7a44" stroke-width="2.5"/><ellipse cx="36" cy="56" rx="11" ry="17" fill="#8a4a1f" stroke="#5a2c0c" stroke-width="2.5" transform="rotate(-18 36 56)"/><ellipse cx="66" cy="58" rx="10" ry="16" fill="#8a4a1f" stroke="#5a2c0c" stroke-width="2.5" transform="rotate(22 66 58)"/><ellipse cx="52" cy="50" rx="11" ry="18" fill="#9a5a2a" stroke="#5a2c0c" stroke-width="2.5" transform="rotate(6 52 50)"/><ellipse cx="47" cy="40" rx="3.5" ry="6" fill="#c97b4a" opacity=".8" transform="rotate(6 47 40)"/>${face(52,54,.9,'#3a1c06')}`),
+whale:()=>PW(`<path d="M80 50 Q92 40 94 30 Q96 44 90 52 Q96 56 94 66 Q86 60 80 58 Z" fill="#35d0e0" stroke="#1a8a9a" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 54 C20 36 40 28 56 30 C76 32 84 44 84 54 C84 66 70 74 52 74 C34 74 20 68 20 54 Z" fill="#35d0e0" stroke="#1a8a9a" stroke-width="3"/><path d="M28 63 Q50 72 72 63" stroke="#c8f4fa" stroke-width="6" fill="none" opacity=".9" stroke-linecap="round"/><path d="M40 28 Q38 18 32 14" stroke="#8fe3f0" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="29" cy="10" r="3" fill="#8fe3f0"/><circle cx="40" cy="8" r="2.5" fill="#8fe3f0"/>${face(44,50,1,'#0c4a5a')}`),
+crown:()=>PW(`<path d="M22 68 L18 34 L36 48 L50 26 L64 48 L82 34 L78 68 Z" fill="#ffd24a" stroke="#c97b12" stroke-width="3" stroke-linejoin="round"/><rect x="20" y="66" width="60" height="12" rx="6" fill="#ffb020" stroke="#c97b12" stroke-width="2.5"/><circle cx="18" cy="32" r="5" fill="#e0453a" stroke="#a02a22" stroke-width="2"/><circle cx="50" cy="24" r="5" fill="#35d0e0" stroke="#1a8a9a" stroke-width="2"/><circle cx="82" cy="32" r="5" fill="#3fbf6f" stroke="#1f7a44" stroke-width="2"/>${face(50,71,.75,'#5a3400')}`)
+};
+
+/* ================= البيانات ================= */
+const CLUES=[{w:'تفاحة',pic:'apple'},{w:'كتاب',pic:'book'},{w:'بيت',pic:'house'},{w:'تمر',pic:'dates'},{w:'حوت',pic:'whale'}];
+const DIST=['ب','ث','ن','ط','ة','ب','ث','ن','ا','ف','ك','م','ر','س','ل','و','ي','ح','ج','ع','ص','ب','ث','ن','ط'];
+const LETTER_HINT={'ب':'هذه باء! نقطتها واحدة تحت الحرف، والتاء نقطتان فوق ☝️☝️','ث':'هذه ثاء! لها ثلاث نقاط فوق، والتاء نقطتان فقط!','ن':'هذه نون! لها نقطة واحدة فوق، والتاء نقطتان!','ط':'هذه طاء! شكلها مختلف ولها نقطة واحدة — ابحث عن ت!','ة':'هذه تاء مربوطة (ة) مدوّرة ومغلقة! نبحث عن التاء المفتوحة (ت)!'};
+const SUSPECTS=[{w:'تفاحة',pic:'apple'},{w:'قطة',pic:'cat'},{w:'أسد',pic:'lion'},{w:'كتاب',pic:'book'},{w:'قلم',pic:'pencil'}];
+const SUSPECT_HINT={'قطة':'«قطة» فيها طاء (ط) وتاء مربوطة (ة)، وليس فيها التاء المفتوحة ت!','أسد':'«أسد» ليس فيها حرف التاء! افحص كلمة أخرى.','قلم':'«قلم» ليس فيها حرف التاء! ابحث عن نقطتين فوق الحرف.'};
+const WORDFILES=[{w:'تفاح',pic:'apple',pos:0},{w:'كتاب',pic:'book',pos:1},{w:'بيت',pic:'house',pos:2}];
+const BOXES=[
+ {q:'اختر الكلمة التي <b>تبدأ</b> بحرف التاء (ت)',opts:[{w:'تمر',pic:'dates'},{w:'كتاب',pic:'book'},{w:'بيت',pic:'house'}],ans:'تمر',hint:'نبحث عن كلمة أول حرف فيها تاء: تـمثل تمر!'},
+ {q:'اختر الكلمة التي <b>تنتهي</b> بحرف التاء (ت)',opts:[{w:'تفاح',pic:'apple'},{w:'بيت',pic:'house'},{w:'تاج',pic:'crown'}],ans:'بيت',hint:'نبحث عن كلمة آخر حرف فيها تاء: ـت مثل بيت!'},
+ {q:'اختر الكلمة التي يقع فيها حرف التاء في <b>الوسط</b>',opts:[{w:'تاج',pic:'crown'},{w:'حوت',pic:'whale'},{w:'كتاب',pic:'book'}],ans:'كتاب',hint:'نبحث عن كلمة التاء فيها بين حرفين: ـتـ مثل كتاب!'}];
+const STAGE_META=[null,{t:'البحث عن الأدلة',s:'حرّك العدسة المكبرة واضغط على حرف التاء لتجمع الأدلة'},{t:'فحص المشتبه بهم',s:'حدّد الصور التي تحتوي أسماؤها على حرف التاء'},{t:'تحديد مكان الحرف',s:'اضغط على حرف التاء نفسه داخل كل كلمة'},{t:'حل القضية',s:'افتح الصناديق الثلاثة وأجب عن ألغاز مواقع التاء'}];
+
+/* ================= الصوت ================= */
+const MEL=[294,0,349,0,392,0,440,0,523,0,440,392,0,349,0,294,349,0,392,0,440,0,523,587,0,523,440,0,392,0,349,0];
+const BASS=[147,0,0,0,110,0,0,0,131,0,0,0,98,0,0,0,147,0,0,0,110,0,0,0,131,0,0,0,110,0,0,0];
+const AudioEng={ctx:null,master:null,music:null,delay:null,nbuf:null,step:0,nextT:0,
+ init(){if(this.ctx)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  const c=this.ctx=new AC();const comp=c.createDynamicsCompressor();comp.connect(c.destination);
+  this.master=c.createGain();this.master.gain.value=S.sound?.9:0;this.master.connect(comp);
+  this.music=c.createGain();this.music.gain.value=.45;this.music.connect(this.master);
+  this.delay=c.createDelay(.6);this.delay.delayTime.value=.26;const fb=c.createGain();fb.gain.value=.25;const wet=c.createGain();wet.gain.value=.18;
+  this.delay.connect(fb);fb.connect(this.delay);this.delay.connect(wet);wet.connect(this.master);
+  this.nbuf=c.createBuffer(1,c.sampleRate,c.sampleRate);const nd=this.nbuf.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+  const hb=c.createBuffer(1,c.sampleRate*2,c.sampleRate);const hd=hb.getChannelData(0);let l=0;
+  for(let i=0;i<hd.length;i++){l=(l+.02*(Math.random()*2-1))/1.02;hd[i]=l*3.5;}
+  const hs=c.createBufferSource();hs.buffer=hb;hs.loop=true;const hf=c.createBiquadFilter();hf.type='lowpass';hf.frequency.value=200;const hg=c.createGain();hg.gain.value=.04;
+  hs.connect(hf);hf.connect(hg);hg.connect(this.master);hs.start();
+  this.nextT=c.currentTime+.15;this.step=0;setInterval(()=>this.sched(),110);},
+ sched(){const c=this.ctx;if(!c||c.state!=='running')return;if(!S.sound){this.nextT=c.currentTime+.1;return;}
+  while(this.nextT<c.currentTime+.3){const i=this.step%32;
+   if(MEL[i])this.vibe(MEL[i],this.nextT,.13);
+   if(BASS[i])this.pizz(BASS[i],this.nextT);
+   if(i%4===2)this.brush(this.nextT);
+   this.nextT+=.25;this.step++;}},
+ vibe(f,t,v){const c=this.ctx,o=c.createOscillator(),o2=c.createOscillator(),g=c.createGain(),g2=c.createGain();
+  o.type='sine';o.frequency.value=f;o2.type='sine';o2.frequency.value=f*2.01;g2.gain.value=.1;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+.75);
+  o.connect(g);o2.connect(g2);g2.connect(g);g.connect(this.music);g.connect(this.delay);o.start(t);o2.start(t);o.stop(t+.8);o2.stop(t+.8);},
+ pizz(f,t){const c=this.ctx,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=f;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+.28);
+  o.connect(g);g.connect(this.music);o.start(t);o.stop(t+.3);},
+ brush(t){const c=this.ctx,src=c.createBufferSource();src.buffer=this.nbuf;const f=c.createBiquadFilter();f.type='highpass';f.frequency.value=6000;const g=c.createGain();
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.02,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+.09);
+  src.connect(f);f.connect(g);g.connect(this.music);src.start(t);src.stop(t+.1);},
+ setOn(on){if(this.master&&this.ctx)this.master.gain.linearRampToValueAtTime(on?.9:0,this.ctx.currentTime+.15);}
+};
+function tone(f,o){o=o||{};const c=AudioEng.ctx;if(!c||!S.sound)return;const t=c.currentTime+(o.at||0),dur=o.dur||.2;
+ const os=c.createOscillator(),g=c.createGain();os.type=o.type||'sine';os.frequency.setValueAtTime(f,t);
+ if(o.slide)os.frequency.exponentialRampToValueAtTime(Math.max(40,f+o.slide),t+dur);
+ g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(o.vol||.2,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+ os.connect(g);g.connect(AudioEng.master);if(o.echo)g.connect(AudioEng.delay);os.start(t);os.stop(t+dur+.05);}
+function noiseFx(o){o=o||{};const c=AudioEng.ctx;if(!c||!S.sound||!AudioEng.nbuf)return;const t=c.currentTime+(o.at||0),dur=o.dur||.3;
+ const src=c.createBufferSource();src.buffer=AudioEng.nbuf;src.loop=true;const f=c.createBiquadFilter();f.type=o.ftype||'bandpass';f.frequency.setValueAtTime(o.f||1200,t);f.Q.value=o.q||1;
+ if(o.slide)f.frequency.exponentialRampToValueAtTime(Math.max(60,(o.f||1200)+o.slide),t+dur);
+ const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(o.vol||.12,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+ src.connect(f);f.connect(g);g.connect(AudioEng.master);src.start(t);src.stop(t+dur+.05);}
+const sfx={
+ type:()=>{tone(1400,{type:'square',dur:.03,vol:.05});noiseFx({dur:.04,vol:.05,f:3000,ftype:'highpass'});},
+ clue:()=>{tone(880,{dur:.14,vol:.15,echo:1});tone(1320,{at:.08,dur:.24,vol:.12,echo:1});tone(160,{at:.02,dur:.08,vol:.12});},
+ stamp:()=>{tone(140,{dur:.09,vol:.16});noiseFx({dur:.08,vol:.08,f:800});},
+ wrong:()=>{tone(392,{type:'triangle',dur:.18,vol:.12});tone(330,{type:'triangle',at:.16,dur:.3,vol:.12});},
+ unlock:()=>{tone(180,{dur:.1,vol:.16});[523,659,784,1047].forEach((f,i)=>tone(f,{at:.12+i*.08,dur:.3,vol:.14,echo:1}));},
+ fanfare:()=>{[523,659,784,1047,1319].forEach((f,i)=>tone(f,{at:i*.1,dur:.5,vol:.16,echo:1,type:'sawtooth'}));noiseFx({dur:.5,vol:.04,f:4000,ftype:'highpass',at:.3});},
+ medal:()=>{sfx.fanfare();[1047,1319,1568,2093].forEach((f,i)=>tone(f,{at:.6+i*.12,dur:.6,vol:.12,echo:1}));},
+ whoosh:()=>noiseFx({dur:.45,vol:.09,f:600,slide:1800}),
+ tick:()=>tone(1200,{dur:.04,vol:.045}),
+ lens:()=>tone(700,{dur:.12,vol:.06,slide:300})
+};
+
+/* ================= الجسيمات ================= */
+const bg={cv:$('#bgcv'),cx:null,stars:[],glyphs:[]};const fx={cv:$('#fxcv'),cx:null,ps:[]};
+function resize(){const d=Math.min(window.devicePixelRatio||1,2);[bg,fx].forEach(o=>{o.cv.width=Math.floor(innerWidth*d);o.cv.height=Math.floor(innerHeight*d);o.cv.style.width=innerWidth+'px';o.cv.style.height=innerHeight+'px';o.cx=o.cv.getContext('2d');o.cx.setTransform(d,0,0,d,0,0);});
+ bg.stars=RM?[]:Array.from({length:60},()=>({x:rnd(0,innerWidth),y:rnd(0,innerHeight*.5),r:rnd(.6,1.8),ph:rnd(0,6.28),sp:rnd(.5,2)}));
+ bg.glyphs=RM?[]:Array.from({length:14},()=>({x:rnd(0,innerWidth),y:rnd(0,innerHeight),ch:pick(['ت','ب','ا','م','ر','س','ف','ك','ن','ح']),s:rnd(16,32),v:rnd(6,16),a:rnd(.08,.22),ph:rnd(0,6.28),col:pick(['#ffd24a','#35d0e0','#7c5cff'])}));
+ buildLensWorld();}
+function fxSpark(x,y,n,col){if(RM)n=Math.min(n,3);for(let i=0;i<n;i++){if(fx.ps.length>460)return;const a=rnd(0,6.28),sp=rnd(30,200);fx.ps.push({type:'spark',x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-40,r:rnd(1.5,3.5),t:0,life:rnd(.4,.8),col:col||pick(PAL)});}}
+function fxConfetti(x,y,n){if(RM)n=Math.min(n,8);for(let i=0;i<n;i++){if(fx.ps.length>460)return;fx.ps.push({type:'conf',x,y,vx:rnd(-260,260),vy:rnd(-420,-80),g:340,rot:rnd(0,6.28),vr:rnd(-8,8),w:rnd(5,9),h:rnd(8,14),t:0,life:rnd(1,1.7),col:pick(PAL)});}}
+function fxRain(){if(RM)return;for(let i=0;i<8;i++){if(fx.ps.length>460)return;fx.ps.push({type:'conf',x:rnd(0,innerWidth),y:-14,vx:rnd(-30,30),vy:rnd(60,140),g:50,rot:rnd(0,6.28),vr:rnd(-6,6),w:rnd(5,9),h:rnd(8,14),t:0,life:rnd(2.2,3.4),col:pick(PAL)});}}
+function awardClues(n,x,y){const box=$('#cluesBox');if(!box)return;const r=box.getBoundingClientRect(),tx=r.left+r.width/2,ty=r.top+r.height/2;
+ for(let i=0;i<n;i++){const sx=x+rnd(-14,14),sy=y+rnd(-10,10),dx=tx-sx,dy=ty-sy,len=Math.hypot(dx,dy)||1;fx.ps.push({type:'clue',sx,sy,px:-dy/len,py:dx/len,arc:rnd(-70,70),tx,ty,t:0,dur:.75,delay:i*.13,done:false});}}
+function clueHUD(){$('#clueCount').textContent=arNum(S.clues);const b=$('#cluesBox');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}
+const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function drawStarPath(cx,x,y,r,rot){cx.beginPath();for(let i=0;i<10;i++){const a=rot-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;const px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;i?cx.lineTo(px,py):cx.moveTo(px,py);}cx.closePath();}
+function drawBG(dt,t){const cx=bg.cx;if(!cx)return;cx.clearRect(0,0,innerWidth,innerHeight);
+ for(const s of bg.stars){cx.globalAlpha=.3+.5*Math.abs(Math.sin(t*s.sp+s.ph));cx.fillStyle='#fff6d8';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.283);cx.fill();}
+ cx.textAlign='center';cx.textBaseline='middle';
+ for(const g of bg.glyphs){g.y-=g.v*dt;g.x+=Math.sin(t*.5+g.ph)*10*dt;if(g.y<-40){g.y=innerHeight+40;g.x=rnd(0,innerWidth);}
+  cx.globalAlpha=g.a;cx.fillStyle=g.col;cx.font='800 '+g.s+'px "Baloo Bhaijaan 2",sans-serif';cx.fillText(g.ch,g.x,g.y);}
+ cx.globalAlpha=1;}
+function drawFX(dt){const cx=fx.cx;if(!cx)return;cx.clearRect(0,0,innerWidth,innerHeight);
+ for(let i=fx.ps.length-1;i>=0;i--){const p=fx.ps[i];
+  if(p.type==='spark'){p.t+=dt;if(p.t>=p.life){fx.ps.splice(i,1);continue;}p.vy+=140*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;const a=1-p.t/p.life;cx.globalAlpha=a*.25;cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,p.r*2.4,0,6.283);cx.fill();cx.globalAlpha=a;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.283);cx.fill();}
+  else if(p.type==='conf'){p.t+=dt;if(p.t>=p.life||p.y>innerHeight+30){fx.ps.splice(i,1);continue;}p.vy+=p.g*dt;p.vx*=.99;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.vr*dt;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.globalAlpha=Math.min(1,2*(1-p.t/p.life));cx.fillStyle=p.col;cx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cx.restore();}
+  else if(p.type==='clue'){if(p.delay>0){p.delay-=dt;cx.globalAlpha=.8;cx.fillStyle='#ffd24a';drawStarPath(cx,p.sx,p.sy,6,p.delay*4);cx.fill();continue;}p.t+=dt/p.dur;if(p.t>=1){if(!p.done){p.done=true;S.clues++;clueHUD();sfx.tick();}fx.ps.splice(i,1);continue;}const e=easeIO(Math.min(p.t,1)),bulge=Math.sin(e*Math.PI)*p.arc;const x=p.sx+(p.tx-p.sx)*e+p.px*bulge,y=p.sy+(p.ty-p.sy)*e+p.py*bulge;cx.globalAlpha=.25;cx.fillStyle='#ffd24a';cx.beginPath();cx.arc(x,y,14,0,6.283);cx.fill();cx.globalAlpha=1;drawStarPath(cx,x,y,9,p.t*3);cx.fill();cx.strokeStyle='#c98a2e';cx.lineWidth=1;cx.stroke();}}
+ cx.globalAlpha=1;}
+let rafId=null,lastT=0;
+function tick(now){rafId=requestAnimationFrame(tick);const dt=Math.min(.05,(now-lastT)/1000)||.016;lastT=now;drawBG(dt,now/1000);drawFX(dt);}
+function startLoop(){if(rafId==null){lastT=performance.now();rafId=requestAnimationFrame(tick);}}
+function stopLoop(){if(rafId!=null){cancelAnimationFrame(rafId);rafId=null;}}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopLoop();else{startLoop();if(AudioEng.ctx&&AudioEng.ctx.state==='suspended')AudioEng.ctx.resume();}});
+
+/* ================= المدينة ================= */
+function buildSkyline(){
+ const buildings=[[0,120,190],[110,90,250],[195,140,160],[330,100,290],[425,130,210],[550,95,260],[640,150,180],[785,110,310],[890,130,220],[1015,100,270],[1110,140,190],[1245,110,240],[1350,95,200]];
+ let s='<svg viewBox="0 0 1440 400" preserveAspectRatio="none">';
+ buildings.forEach((b,bi)=>{const[x,w,h]=b,y=400-h;
+  s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${bi%2?'#141d38':'#101830'}" stroke="#0a1024" stroke-width="2"/>`;
+  const cols=Math.floor(w/26),rows=Math.floor(h/34);
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+   const wx=x+10+c*26,wy=y+14+r*34,lit=Math.random()<.42;
+   const col=lit?pick(['#ffb020','#ffd24a','#35d0e0','#7c5cff']):'#1c2748';
+   s+=`<rect x="${wx}" y="${wy}" width="14" height="18" rx="2" fill="${col}" opacity="${lit?rnd(.5,.95).toFixed(2):'.5'}"/>`;
+   if(lit&&Math.random()<.16)s+=`<text x="${wx+7}" y="${wy+14}" text-anchor="middle" font-size="12" font-weight="800" fill="#10182e" style="font-family:'Baloo Bhaijaan 2',sans-serif">${pick(['ت','ب','ا','م','ر','ف'])}</text>`;
+  }});
+ s+='<rect x="0" y="392" width="1440" height="8" fill="#0a1024"/></svg>';
+ $('#skyline').innerHTML=s;
+}
+
+/* ================= المحقق ================= */
+let moodTimer=null,talkTimer=null,lastSay=0;
+function setMood(m,dur){const r=$('#detective');if(!r)return;clearTimeout(moodTimer);r.dataset.mood=m;if(m!=='idle')moodTimer=setTimeout(()=>{r.dataset.mood='idle';},dur||(m==='cheer'?2600:1600));}
+function detSay(text,mood,html){const b=$('#bubble'),r=$('#detective');if(!b)return;if(html)b.innerHTML=text;else b.textContent=text;
+ b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');lastSay=performance.now();
+ if(r){r.classList.add('talk');clearTimeout(talkTimer);talkTimer=setTimeout(()=>r.classList.remove('talk'),950);}setMood(mood||'happy');}
+function shakeStage(){const s=$('#stage');s.classList.remove('shake');void s.offsetWidth;s.classList.add('shake');}
+
+/* ================= HUD ================= */
+const PIP_LBL=['أدلة','مشتبه بهم','مواقع','القضية'];
+function buildPips(){$('#pips').innerHTML=PIP_LBL.map((l,i)=>`<div class="pip"><span class="n">${arNum(i+1)}</span><span class="lbl">${l}</span></div>`).join('');}
+function updatePips(){$$('#pips .pip').forEach((p,i)=>{p.classList.toggle('done',S.done[i]);p.classList.toggle('active',S.stage===i+1&&!S.done[i]);p.querySelector('.n').textContent=S.done[i]?'✓':arNum(i+1);});}
+function updateSoundBtn(){const b=$('#soundBtn');b.innerHTML=(S.sound?sndOnSVG():sndOffSVG())+`<span class="lbl">${S.sound?'الصوت':'صامت'}</span>`;b.classList.toggle('muted',!S.sound);b.setAttribute('aria-pressed',String(S.sound));b.setAttribute('aria-label',S.sound?'كتم الصوت':'تشغيل الصوت');}
+
+/* ================= العدسة المكبرة ================= */
+const lensEl=$('#lens'),lensWorld=$('#lensWorld'),stageEl=$('#stage'),overlayEl=$('#overlay');
+let lensBoard=null,lensK=2,lensR=84,lensHideTimer=null,lensDown=null,lastPointerExam=0;
+const overlayOpen=()=>overlayEl.classList.contains('show');
+function buildLensWorld(){
+ if(!lensBoard||!document.contains(lensBoard)){lensWorld.innerHTML='';return;}
+ const clone=lensBoard.cloneNode(true);
+ clone.removeAttribute('id');clone.style.width=lensBoard.clientWidth+'px';
+ $$('.lcell',clone).forEach(c=>{c.removeAttribute('tabindex');c.removeAttribute('role');});
+ lensWorld.innerHTML='';lensWorld.appendChild(clone);
+ lensR=lensEl.offsetWidth/2||84;lensK=innerWidth<760?1.8:2;
+}
+function syncLensCell(idx,cls){const c=$('.lcell[data-idx="'+idx+'"]',lensWorld);if(c)c.classList.add(cls);}
+function showLensAt(clientX,clientY,type){
+ if(!lensBoard||overlayOpen())return;
+ const br=lensBoard.getBoundingClientRect();
+ const bx=clientX-br.left,by=clientY-br.top;
+ if(bx<0||by<0||bx>br.width||by>br.height){hideLens();return;}
+ const offY=type==='touch'?-95:0;
+ lensEl.style.left=clientX+'px';lensEl.style.top=(clientY+offY)+'px';
+ lensWorld.style.transform=`translate(${lensR-bx*lensK}px,${lensR-by*lensK}px) scale(${lensK})`;
+ lensEl.classList.add('on');
+ clearTimeout(lensHideTimer);
+ if(type==='touch')lensHideTimer=setTimeout(hideLens,1400);
+}
+function hideLens(){lensEl.classList.remove('on');}
+function lensPulse(){lensEl.classList.remove('pulse');void lensEl.offsetWidth;lensEl.classList.add('pulse');}
+document.addEventListener('pointermove',e=>{
+ if(!lensBoard||S.screen!=='stage'||overlayOpen())return;
+ const overBoard=e.target.closest&&e.target.closest('#letterBoard');
+ if(overBoard||lensDown){showLensAt(e.clientX,e.clientY,e.pointerType);if(lensDown&&Math.hypot(e.clientX-lensDown.x,e.clientY-lensDown.y)>10)lensDown.moved=true;}
+ else if(e.pointerType!=='touch')hideLens();
+},{passive:true});
+document.addEventListener('pointerdown',e=>{
+ if(!lensBoard||S.screen!=='stage'||overlayOpen()||S.busy)return;
+ const cell=e.target.closest&&e.target.closest('.lcell');
+ if(cell){lensDown={x:e.clientX,y:e.clientY,moved:false,cell};showLensAt(e.clientX,e.clientY,e.pointerType);}
+},{passive:true});
+document.addEventListener('pointerup',e=>{
+ if(!lensDown)return;const d=lensDown;lensDown=null;
+ if(!d.moved&&d.cell&&document.contains(d.cell)){lastPointerExam=performance.now();examineCell(d.cell);}
+ if(e.pointerType==='touch'){clearTimeout(lensHideTimer);lensHideTimer=setTimeout(hideLens,1100);}
+});
+document.addEventListener('pointercancel',()=>{lensDown=null;hideLens();});
+
+/* ================= قوالب ================= */
+function stageHead(n,title,obj){return `<div class="stage-head"><span class="stage-chip">المرحلة ${arNum(n)} من ٤</span><h2 class="stage-title">${title}</h2><p class="stage-obj">${obj}</p><span class="target-chip">المطلوب: <b>ت</b> — نقطتان فوق الجسم</span></div>`;}
+function caseShell(tab,inner,stamp){return `<div class="case"><div class="lamp-cone"></div><div class="case-tab">${tab}</div><div class="case-stamp">${stamp||'سري للغاية'}</div><span class="clip c1"></span><span class="clip c2"></span>${inner}</div>`;}
+function stageDone(n,msg,btnLabel,cb){S.done[n-1]=true;updatePips();sfx.fanfare();
+ const c=$('#stage .case');const cc=c?center(c):{x:innerWidth/2,y:innerHeight/2};fxConfetti(cc.x,cc.y-40,44);
+ const card=document.createElement('div');card.className='done-card';card.innerHTML=`<p>🔍 ${msg}</p><button class="btn-primary">${btnLabel} ⬅</button>`;
+ card.querySelector('button').addEventListener('click',function(){this.disabled=true;sfx.stamp();cb();});stageEl.appendChild(card);card.scrollIntoView({behavior:RM?'auto':'smooth',block:'nearest'});}
+function freshStage(){TOKEN++;S.busy=false;lensBoard=null;hideLens();lensWorld.innerHTML='';S.hintHandler=null;}
+
+/* ================= المرحلة ١ ================= */
+function renderStage1(){
+ const letters=shuffle(['ت','ت','ت','ت','ت'].concat(DIST));
+ const cells=letters.map((l,i)=>`<div class="lcell" role="button" tabindex="0" data-idx="${i}" data-letter="${l}" aria-label="حرف ${l}">${l}</div>`).join('');
+ const clueSlots=CLUES.map((c,i)=>`<div class="clue-slot cs${i+1}" data-clue="${i}"><div class="clue-card"><span class="clue-num">دليل ${arNum(i+1)}</span>${PICS[c.pic]()}<div class="clue-word">${c.w}</div></div></div>`).join('');
+ const strings=CLUES.map((c,i)=>`<path data-s="${i}" d="M 100 100 Q ${[150,50,150,50,100][i]} ${[40,40,160,160,190][i]} ${[176,24,176,24,100][i]} ${[36,32,150,150,186][i]}"/>`).join('');
+ stageEl.innerHTML=stageHead(1,'البحث عن الأدلة','حرّك العدسة المكبرة فوق اللوحة، واضغط على حرف التاء (ت) ليظهر دليل جديد!')+
+ caseShell('ملف القضية ٠٠٧ — لوحة الحروف',`
+  <div class="progress-row"><span class="progress-label">أدلة التاء: <span id="s1Count">٠</span> / ٥</span><div class="mini-pins" id="miniPins">${'<span class="mini-pin"></span>'.repeat(5)}</div></div>
+  <div class="s1-wrap">
+    <div class="board-side"><div class="board-hint"><span class="mag">🔍</span> حرّك العدسة ثم اضغط على الحرف المشتبه به</div><div class="letter-board" id="letterBoard">${cells}</div></div>
+    <div class="cork" id="cork"><div class="cork-title">لوحة الأدلة</div><svg class="strings" viewBox="0 0 200 212" preserveAspectRatio="none">${strings}</svg><div class="cork-pin">ت</div>${clueSlots}</div>
+  </div>`);
+ lensBoard=$('#letterBoard');buildLensWorld();
+ let found=0;
+ window._examine=(cell)=>{
+  if(S.busy||cell.classList.contains('found'))return;
+  const l=cell.dataset.letter,idx=cell.dataset.idx;
+  lensPulse();sfx.type();
+  cell.classList.add('scan');setTimeout(()=>cell.classList.remove('scan'),520);
+  if(l==='ت'){
+   cell.classList.add('found');syncLensCell(idx,'found');sfx.clue();
+   const c=center(cell);fxSpark(c.x,c.y,12,'#ffd24a');awardClues(1,c.x,c.y);
+   const slot=$('.clue-slot[data-clue="'+found+'"]');if(slot)slot.classList.add('on');
+   const str=$('.strings path[data-s="'+found+'"]');if(str)str.classList.add('on');
+   const pin=$$('#miniPins .mini-pin')[found];if(pin)pin.classList.add('full');
+   found++;$('#s1Count').textContent=arNum(found);
+   detSay(pick(PRAISE)+` دليل جديد: «${CLUES[found-1].w}» 📌`,'happy');
+   if(found===5){S.busy=true;awardClues(2,center($('#cork')).x,center($('#cork')).y);later(1300,()=>stageDone(1,'جمعت كل الأدلة الخمسة! التاء لها نقطتان فوق الجسم.','التالي: فحص المشتبه بهم',()=>showTransition(2)));}
+  }else{
+   cell.classList.add('miss');setTimeout(()=>cell.classList.remove('miss'),470);
+   syncLensCellMiss(idx);sfx.wrong();shakeStage();S.mistakes++;
+   detSay(LETTER_HINT[l]||`هذا حرف «${l}» وليس التاء! ابحث عن نقطتين فوق الجسم 🔍`,'sad');
+  }
+ };
+ S.hintHandler=()=>{const c=$$('#letterBoard .lcell:not(.found)').find(el=>el.dataset.letter==='ت');
+  if(c){const r=c.getBoundingClientRect();showLensAt(r.left+r.width/2,r.top+r.height/2,'mouse');lensPulse();sfx.lens();
+   clearTimeout(lensHideTimer);lensHideTimer=setTimeout(hideLens,2200);
+   detSay('انظر عبر العدسة! هذا الحرف له نقطتان فوق جسم مفتوح: ت! 🔍','happy');}};
+ detSay('لغز في مدينة الحروف! حرّك العدسة واضغط على كل حرف تاء تجمعه كدليل 🕵️','idle');
+}
+function syncLensCellMiss(idx){const c=$('.lcell[data-idx="'+idx+'"]',lensWorld);if(c){c.classList.add('miss');setTimeout(()=>c.classList.remove('miss'),470);}}
+function examineCell(cell){if(window._examine)window._examine(cell);}
+
+/* ================= المرحلة ٢ ================= */
+function renderStage2(){
+ let found=0;const total=SUSPECTS.filter(s=>hasTaa(s.w)).length;
+ const cards=shuffle(SUSPECTS).map((s,i)=>`<div class="suspect" role="button" tabindex="0" data-word="${s.w}" aria-label="مشتبه به: ${s.w}" style="animation-delay:${i*70}ms"><span class="check">✓</span><span class="num">${arNum(i+1)}</span><div class="mug">${PICS[s.pic]()}</div><div class="sname">${s.w}</div><div class="slabel">مشتبه به — افحص الاسم</div><span class="stamp-ok">دليل مؤكد ✓</span><span class="stamp-no">لا تاء هنا</span></div>`).join('');
+ stageEl.innerHTML=stageHead(2,'فحص المشتبه بهم','اضغط على الصور التي تحتوي أسماؤها على حرف التاء — ستظهر علامة صح beside الإجابة الصحيحة!')+
+ caseShell('ملف القضية ٠٠٧ — طابور المشتبه بهم',`<div class="progress-row"><span class="progress-label">مشتبه بهم مؤكّدون: <span id="s2Count">٠</span> / ${arNum(total)}</span></div><div class="lineup" id="lineup">${cards}</div>`,'تحقيق جارٍ');
+ window._suspect=(el)=>{
+  if(S.busy||el.classList.contains('ok')||el.classList.contains('cool'))return;
+  const w=el.dataset.word;sfx.type();
+  if(hasTaa(w)){
+   el.classList.add('ok');sfx.stamp();sfx.clue();
+   const c=center(el);fxSpark(c.x,c.y,12,'#3fbf6f');awardClues(2,c.x,c.y);
+   found++;$('#s2Count').textContent=arNum(found);
+   detSay(pick(PRAISE)+` «${w}» فيها حرف التاء — دليل مؤكد ✓`,'happy');
+   if(found===total){S.busy=true;later(1200,()=>stageDone(2,'فحصت كل المشتبه بهم ووجدت الأدلة!','التالي: تحديد مكان الحرف',()=>showTransition(3)));}
+  }else{
+   el.classList.add('no','cool');sfx.wrong();shakeStage();S.mistakes++;
+   detSay(SUSPECT_HINT[w]||`«${w}» ليس فيها حرف التاء!`,'sad');
+   later(900,()=>el.classList.remove('no','cool'));
+  }
+ };
+ S.hintHandler=()=>{const el=$$('#lineup .suspect:not(.ok)').find(x=>hasTaa(x.dataset.word));
+  if(el){el.style.boxShadow='0 0 0 4px rgba(255,210,74,.7),0 5px 0 #b89a6a';later(1700,()=>{el.style.boxShadow='';});
+   detSay(`افحص اسم «${el.dataset.word}» — هل ترى نقطتين فوق أحد حروفه؟ 🔍`,'happy');}};
+ detSay('خمسة مشتبه بهم! اضغط فقط على من يخفي اسمه حرف التاء 🕵️','idle');
+}
+
+/* ================= المرحلة ٣ ================= */
+function renderStage3(){
+ let solved=0;
+ const files=WORDFILES.map((wf,fi)=>{
+  const tiles=wf.w.split('').map((ch,li)=>`<div class="ltile" role="button" tabindex="0" data-file="${fi}" data-li="${li}" data-ch="${ch}" aria-label="حرف ${ch} في ${wf.w}">${ch}</div>`).join('');
+  return `<div class="wordfile" data-file="${fi}" style="animation-delay:${fi*80}ms"><div class="wpic">${PICS[wf.pic]()}</div><div class="wtiles">${tiles}</div><div class="pos-badge"><b>${POS_NAME[wf.pos]}</b><span>${POS_FORM[wf.pos]}</span></div></div>`;
+ }).join('');
+ stageEl.innerHTML=stageHead(3,'تحديد مكان الحرف','اضغط على حرف التاء نفسه داخل الكلمة — ليس الكلمة كلها! أين تختبئ التاء؟')+
+ caseShell('ملف القضية ٠٠٧ — مواقع الحرف',`<div class="progress-row"><span class="progress-label">مواقع محدّدة: <span id="s3Count">٠</span> / ٣</span></div><div class="wordfiles" id="wordfiles">${files}</div>`,'تحليل الأدلة');
+ window._ltile=(tile)=>{
+  const fi=+tile.dataset.file,wf=WORDFILES[fi],file=$('.wordfile[data-file="'+fi+'"]');
+  if(S.busy||file.classList.contains('solved')||tile.classList.contains('hit'))return;
+  sfx.type();
+  if(+tile.dataset.li===wf.pos){
+   tile.classList.add('hit');file.classList.add('solved');$('.pos-badge',file).classList.add('on');
+   sfx.clue();const c=center(tile);fxSpark(c.x,c.y,12,'#ffd24a');awardClues(2,c.x,c.y);
+   solved++;$('#s3Count').textContent=arNum(solved);
+   detSay(pick(PRAISE)+` التاء في «${wf.w}» تقع في ${POS_NAME[wf.pos]} ${POS_FORM[wf.pos]}`,'happy');
+   if(solved===3){S.busy=true;later(1300,()=>stageDone(3,'حدّدت كل مواقع التاء: أولها ووسطها وآخرها!','التالي: حل القضية',()=>showTransition(4)));}
+  }else{
+   tile.classList.add('miss');setTimeout(()=>tile.classList.remove('miss'),470);
+   sfx.wrong();shakeStage();S.mistakes++;
+   detSay(`هذا حرف «${tile.dataset.ch}»! ابحث عن التاء ذات النقطتين فوق الجسم داخل «${wf.w}» 🔍`,'sad');
+  }
+ };
+ S.hintHandler=()=>{const file=$$('#wordfiles .wordfile:not(.solved)')[0];
+  if(file){const wf=WORDFILES[+file.dataset.file];const t=$$('.ltile',file)[wf.pos];
+   t.style.boxShadow='0 0 0 4px rgba(255,210,74,.8),0 4px 0 #8a5a14';later(1800,()=>{t.style.boxShadow='';});
+   detSay(`في «${wf.w}»: التاء هي الحرف ذو النقطتين فوق الجسم — اضغط عليه وحده! 🔍`,'happy');}};
+ detSay('ثلاث كلمات مشتبه بها! اضغط على حرف التاء نفسه في كل كلمة 🕵️','idle');
+}
+
+/* ================= المرحلة ٤ ================= */
+function renderStage4(){
+ let solved=0,active=0;
+ const boxes=BOXES.map((b,i)=>`<div class="ebox" role="button" tabindex="0" data-box="${i}" aria-label="الصندوق ${arNum(i+1)}" style="animation-delay:${i*80}ms"><span class="box-num">الصندوق ${arNum(i+1)}</span><span class="box-check">✓</span>${boxSVG()}</div>`).join('');
+ stageEl.innerHTML=stageHead(4,'حل القضية','افتح كل صندوق، ثم اختر الكلمة الصحيحة لت解开 اللغز وحل القضية!')+
+ caseShell('ملف القضية ٠٠٧ — صناديق الأدلة',`<div class="progress-row"><span class="progress-label">صناديق محلولة: <span id="s4Count">٠</span> / ٣</span></div><div class="boxes" id="boxes">${boxes}</div><div id="puzzleHost"></div>`,'القضية النهائية');
+ function openPuzzle(i){
+  const box=$('.ebox[data-box="'+i+'"]');if(!box||box.classList.contains('open'))return;
+  active=i;$$('#boxes .ebox').forEach(b=>b.classList.remove('active'));box.classList.add('active');
+  const b=BOXES[i];const opts=shuffle(b.opts).map(o=>`<div class="opt" role="button" tabindex="0" data-word="${o.w}" aria-label="${o.w}">${PICS[o.pic]()}<div class="ow">${o.w}</div></div>`).join('');
+  $('#puzzleHost').innerHTML=`<div class="puzzle"><div class="puzzle-q">🔐 لغز الصندوق ${arNum(i+1)}: ${b.q}</div><div class="opts" id="opts">${opts}</div></div>`;
+  sfx.lens();detSay(`الصندوق ${arNum(i+1)} مفتوح للغز! ${b.q.replace(/<[^>]+>/g,'')}`,'idle');
+  $('#puzzleHost').scrollIntoView({behavior:RM?'auto':'smooth',block:'nearest'});
+ }
+ window._box=(el)=>{if(S.busy)return;openPuzzle(+el.dataset.box);};
+ window._opt=(el)=>{
+  if(S.busy||el.classList.contains('cool')||el.classList.contains('right'))return;
+  const b=BOXES[active],w=el.dataset.word;sfx.type();
+  if(w===b.ans){
+   el.classList.add('right');sfx.unlock();
+   const box=$('.ebox[data-box="'+active+'"]');box.classList.add('open');box.classList.remove('active');
+   const c=center(box);fxSpark(c.x,c.y,18,'#ffd24a');fxConfetti(c.x,c.y-20,20);awardClues(3,c.x,c.y);
+   solved++;$('#s4Count').textContent=arNum(solved);
+   detSay(pick(PRAISE)+` «${w}» هي الإجابة الصحيحة — الصندوق انفتح! 🔓`,'cheer');
+   if(solved===3){S.busy=true;later(1500,()=>{S.done[3]=true;updatePips();showFinale();});}
+   else later(1300,()=>{const next=$$('#boxes .ebox:not(.open)')[0];if(next)openPuzzle(+next.dataset.box);});
+  }else{
+   el.classList.add('wrong','cool');sfx.wrong();shakeStage();S.mistakes++;
+   detSay(b.hint+` «${w}» ليست الإجابة المطلوبة هنا.`,'sad');
+   later(800,()=>el.classList.remove('wrong','cool'));
+  }
+ };
+ openPuzzle(0);
+ S.hintHandler=()=>{const b=BOXES[active];const el=$$('#opts .opt').find(o=>o.dataset.word===b.ans);
+  if(el){el.style.boxShadow='0 0 0 4px rgba(255,210,74,.8),0 4px 0 #8a5a14';later(1800,()=>{el.style.boxShadow='';});
+   detSay(b.hint,'happy');}};
+ detSay('ثلاثة صناديق مغلقة! حل كل لغز لتفتح القضية وتحصل على الوسام 🏅','idle');
+}
+
+/* ================= الطبقات ================= */
+function showOverlay(html,cls,keepToken){if(!keepToken)TOKEN++;overlayEl.className='overlay show '+(cls||'');overlayEl.innerHTML=html;overlayEl.scrollTop=0;hideLens();}
+function hideOverlay(){overlayEl.classList.remove('show');setTimeout(()=>{if(!overlayEl.classList.contains('show'))overlayEl.innerHTML='';},280);}
+function showIntro(){TOKEN++;S.screen='intro';
+ showOverlay(`<div class="intro-card">
+  <div class="intro-hero"><div class="detective" data-mood="happy">${detectiveSVG()}</div></div>
+  <h1 class="intro-title">مدينة الحروف</h1>
+  <div class="intro-sub">قضية التاء الغامضة 🕵️</div>
+  <div class="story"><p>أهلاً أيها المحقق الصغير! أنا المحقق <b>فطين</b> 🔍<br>لغز غامض يحيّر مدينة الحروف: كلمات كثيرة تخفي حرف <b>التاء (ت)</b>!<br>مهمتك: اجمع الأدلة بعدستك المكبرة، افحص المشتبه بهم، حدّد مواقع التاء، ثم حل القضية لتحصل على <b>وسام المحقق المتميز</b> 🏅</p></div>
+  <div class="chips"><span class="chip"><b>١</b> البحث عن الأدلة</span><span class="chip"><b>٢</b> فحص المشتبه بهم</span><span class="chip"><b>٣</b> تحديد مكان الحرف</span><span class="chip"><b>٤</b> حل القضية</span></div>
+  <span class="chip skill-chip">🎯 المهارة: التركيز والانتباه والتمييز بين مواقع الحروف</span>
+  <button class="btn-primary big" id="startBtn">🔍 ابدأ التحقيق!</button>
+  <p class="tiny-note">🔊 أجواء تحقيق مرحة مع موسيقى — يمكنك كتمها من الزر في الأعلى</p>
+ </div>`,'',true);
+ $('#startBtn').addEventListener('click',()=>{AudioEng.init();if(AudioEng.ctx&&AudioEng.ctx.state==='suspended')AudioEng.ctx.resume();sfx.stamp();showTransition(1);});}
+function showTransition(n){TOKEN++;S.stage=n;S.screen='stage';updatePips();const meta=STAGE_META[n];sfx.whoosh();
+ showOverlay(`<div class="trans-card"><div class="trans-mag">${magSVG(120)}</div><div class="trans-num">المرحلة ${arNum(n)} من ٤</div><div class="trans-title">${meta.t}</div><div class="trans-sub">${meta.s}</div></div>`,'trans',true);
+ later(1500,()=>{hideOverlay();renderStage(n);});}
+function renderStage(n){freshStage();window._examine=null;window._suspect=null;window._ltile=null;window._box=null;window._opt=null;stageEl.innerHTML='';
+ if(n===1)renderStage1();else if(n===2)renderStage2();else if(n===3)renderStage3();else renderStage4();window.scrollTo({top:0,behavior:'auto'});}
+function showFinale(){TOKEN++;S.screen='finale';sfx.medal();
+ const rank=S.mistakes<=2?'محقق ذهبي من الدرجة الأولى! 🥇':S.mistakes<=6?'محقق رائع ومجتهد! 🥈':'محقق مثابر لا يستسلم! 🥉';
+ showOverlay(`<div class="finale-card">
+  <div class="detective" data-mood="cheer">${detectiveSVG()}</div>
+  ${medalSVG()}
+  <div class="name-banner" id="nameBanner">المحقق الصغير</div>
+  <div class="closed-stamp">قضية مغلقة ✓</div>
+  <h2 class="finale-title">حللت القضية بنجاح! 🏅</h2>
+  <div class="finale-rank">${rank}</div>
+  <div class="finale-clues">📌 × ${arNum(S.clues)} دليلاً مجموعاً</div>
+  <div class="chips"><span class="chip">٥ أدلة تاء ✓</span><span class="chip">مشتبه بهم مؤكّدون ✓</span><span class="chip">٣ مواقع للتاء ✓</span><span class="chip">٣ صناديق محلولة ✓</span></div>
+  <input class="name-input" id="nameInput" type="text" maxlength="18" placeholder="اكتب اسم المحقق ليظهر على الوسام ✍️" aria-label="اسم المحقق">
+  <button class="btn-primary big" id="againBtn">🔁 قضية جديدة</button>
+ </div>`,'finale',true);
+ fxConfetti(innerWidth/2,innerHeight*.3,70);
+ const rain=()=>{if(S.screen!=='finale'||!overlayOpen())return;fxRain();later(430,rain);};later(400,rain);
+ $('#nameInput').addEventListener('input',function(){$('#nameBanner').textContent=this.value.trim()||'المحقق الصغير';});
+ $('#againBtn').addEventListener('click',()=>{sfx.stamp();resetGame();});}
+function showConfirm(){sfx.stamp();
+ showOverlay(`<div class="confirm-card"><h3>هل نفتح قضية جديدة؟ 🔄</h3><p>سيعود التحقيق إلى البداية وتضيع أدلتك الحالية!</p><div class="confirm-btns"><button class="btn-primary" id="yesBtn">نعم، قضية جديدة!</button><button class="btn-plain" id="noBtn">لا، أكمل التحقيق ▶</button></div></div>`,'',true);
+ $('#yesBtn').addEventListener('click',resetGame);$('#noBtn').addEventListener('click',()=>{sfx.type();hideOverlay();});}
+function resetGame(){TOKEN++;S.screen='intro';S.stage=0;S.clues=0;S.mistakes=0;S.busy=false;S.done=[false,false,false,false];
+ fx.ps.length=0;lensBoard=null;hideLens();lensWorld.innerHTML='';
+ window._examine=null;window._suspect=null;window._ltile=null;window._box=null;window._opt=null;
+ updatePips();clueHUD();stageEl.innerHTML='';hideOverlay();showIntro();detSay('قضية جديدة! هيا نجمع الأدلة من جديد 🕵️','happy');}
+
+/* ================= محيط حي ================= */
+let ambTick=0;
+setInterval(()=>{if(document.hidden)return;ambTick++;
+ if(ambTick%4===0&&S.screen==='stage'&&!S.busy&&!overlayOpen()&&performance.now()-lastSay>15000){
+  detSay(pick(['التاء لها نقطتان فوق جسم مفتوح: ت 🔍','ابحث بعينيك جيداً أيها المحقق!','كل دليل يقرّبنا من حل القضية 📌','الباء نقطتها تحت، والثاء ثلاث نقاط فوق — لا تنخدع!']),'idle');}
+},6000);
+
+/* ================= الأحداث والتهيئة ================= */
+stageEl.addEventListener('click',e=>{
+ if(S.busy||overlayOpen())return;
+ const cell=e.target.closest('.lcell');
+ if(cell){if(performance.now()-lastPointerExam<500)return;examineCell(cell);return;}
+ const sus=e.target.closest('.suspect');if(sus&&window._suspect){window._suspect(sus);return;}
+ const tile=e.target.closest('.ltile');if(tile&&window._ltile){window._ltile(tile);return;}
+ const box=e.target.closest('.ebox');if(box&&window._box){window._box(box);return;}
+ const opt=e.target.closest('.opt');if(opt&&window._opt){window._opt(opt);return;}
+});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[role=button]')){e.preventDefault();e.target.click();}});
+$('#logoMag').innerHTML=magSVG(36);
+$('#clueIco').innerHTML=pinSVG();
+$('#detective').innerHTML=detectiveSVG();
+$('#restartBtn').innerHTML=restartSVG()+'<span class="lbl">قضية جديدة</span>';
+buildSkyline();buildPips();updatePips();updateSoundBtn();clueHUD();
+resize();window.addEventListener('resize',resize);startLoop();
+document.addEventListener('pointerdown',()=>{AudioEng.init();if(AudioEng.ctx&&AudioEng.ctx.state==='suspended')AudioEng.ctx.resume();},{capture:true});
+$('#soundBtn').addEventListener('click',()=>{S.sound=!S.sound;try{localStorage.setItem('city-taa-sound',S.sound?'1':'0');}catch(e){}AudioEng.init();AudioEng.setOn(S.sound);updateSoundBtn();if(S.sound)sfx.type();});
+$('#restartBtn').addEventListener('click',()=>{if(S.screen==='intro')return;showConfirm();});
+$('#hintBtn').addEventListener('click',()=>{if(S.busy||overlayOpen()||S.screen!=='stage')return;if(S.hintHandler)S.hintHandler();else detSay('استخدم عدستك وابحث عن التاء يا محقق! 🔍','idle');});
+showIntro();detSay('أهلاً أيها المحقق! أنا فطين 🔍 لنحل قضية التاء الغامضة!','happy');
+})();
+</script>
+</body>
+</html>
